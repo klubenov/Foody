@@ -5,13 +5,17 @@ VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{6033CA2F-B845-4F64-9475-8CE595B4162B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foody.Web", "Web\Foody.Web\Foody.Web.csproj", "{FCBCA485-F593-41ED-8B75-3F6B782A3975}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foody.Web", "Web\Foody.Web\Foody.Web.csproj", "{FCBCA485-F593-41ED-8B75-3F6B782A3975}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{543FC3D6-0109-497A-B917-23261BB99708}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foody.Data", "Data\Foody.Data\Foody.Data.csproj", "{35D3E583-1577-40AE-9278-73174E096780}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foody.Data", "Data\Foody.Data\Foody.Data.csproj", "{35D3E583-1577-40AE-9278-73174E096780}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foody.Data.Models", "Data\Foody.Data.Models\Foody.Data.Models.csproj", "{97F4093F-1547-472B-A302-3DA00E8AB9B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foody.Data.Models", "Data\Foody.Data.Models\Foody.Data.Models.csproj", "{97F4093F-1547-472B-A302-3DA00E8AB9B7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{62502DD6-F4E4-406C-83FF-7C0550125C2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Tests\Sandbox\Sandbox.csproj", "{2F367CFE-42FB-4EAC-8F78-EE6DA3478F8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +35,10 @@ Global
 		{97F4093F-1547-472B-A302-3DA00E8AB9B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97F4093F-1547-472B-A302-3DA00E8AB9B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97F4093F-1547-472B-A302-3DA00E8AB9B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F367CFE-42FB-4EAC-8F78-EE6DA3478F8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F367CFE-42FB-4EAC-8F78-EE6DA3478F8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F367CFE-42FB-4EAC-8F78-EE6DA3478F8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F367CFE-42FB-4EAC-8F78-EE6DA3478F8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +47,7 @@ Global
 		{FCBCA485-F593-41ED-8B75-3F6B782A3975} = {6033CA2F-B845-4F64-9475-8CE595B4162B}
 		{35D3E583-1577-40AE-9278-73174E096780} = {543FC3D6-0109-497A-B917-23261BB99708}
 		{97F4093F-1547-472B-A302-3DA00E8AB9B7} = {543FC3D6-0109-497A-B917-23261BB99708}
+		{2F367CFE-42FB-4EAC-8F78-EE6DA3478F8F} = {62502DD6-F4E4-406C-83FF-7C0550125C2D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4ED3AE99-6B9E-4111-BF76-81133860BA3D}
