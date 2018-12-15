@@ -15,6 +15,7 @@ namespace Foody.Data.Models
             this.Locations = new HashSet<Location>();
             this.Articles = new HashSet<Article>();
             this.Comments = new HashSet<Comment>();
+            this.Recipes = new HashSet<Recipe>();
         }
 
         public virtual ICollection<Meal> Meals { get; set; }
@@ -25,6 +26,6 @@ namespace Foody.Data.Models
 
         public virtual ICollection<Comment> Comments { get; set; }
 
-        public ICollection<Recipe> Recipes { get; set; }
+        public virtual ICollection<Recipe> Recipes { get; set; }
     }
 }

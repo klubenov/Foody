@@ -9,7 +9,7 @@ namespace Foody.Data.Models.Nutrition
             this.FoodItemMacroElements = new HashSet<FoodItemMacroElement>();
         }
 
-        public double CaloricContentPer100Grams { get; set; }
+        public double CaloricContentPerGram { get; set; }
 
         public virtual ICollection<FoodItemMacroElement> FoodItemMacroElements { get; set; }
     }

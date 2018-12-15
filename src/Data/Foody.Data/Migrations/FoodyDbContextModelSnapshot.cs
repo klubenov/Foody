@@ -189,7 +189,7 @@ namespace Foody.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<double>("CaloricContentPer100Grams");
+                    b.Property<double>("CaloricContentPerGram");
 
                     b.Property<string>("Description");
 

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Foody.Data;
 using Foody.Data.Models;
+using Foody.Services.DataServices.Menu;
+using Foody.Services.DataServices.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
@@ -40,9 +42,18 @@ namespace Foody.Web
                 options.UseSqlServer(
                     this.Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<FoodyUser>()
+            services.AddIdentity<FoodyUser, IdentityRole>(options =>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequiredLength = 3;
+                })
                 .AddEntityFrameworkStores<FoodyDbContext>();
 
+            services.AddTransient<IMenuService, MenuService>();
+            services.AddTransient<IUsersService, UsersService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -68,6 +79,11 @@ namespace Foody.Web
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

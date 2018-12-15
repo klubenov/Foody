@@ -2,7 +2,7 @@
 for details on configuring this project to bundle and minify static web assets. */
 body {
     padding-top: 50px;
-    padding-bottom: 20px;
+    padding-bottom: 0;
 }
 
 /* Wrapping element */
@@ -35,3 +35,57 @@ body {
         display: none;
     }
 }
+
+* {
+    margin: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+.page-wrap {
+    min-height: 100%;
+    /* equal to footer height */
+    margin-bottom: -60px;
+    
+}
+
+    .page-wrap:after {
+        content: "";
+        display: block;
+    }
+
+    .site-footer, .page-wrap:after {
+        height: 60px;
+    }
+
+.site-footer {
+    background: cadetblue;
+    position: fixed;
+    width: 100%;
+    z-index: 2;
+    border-top: black solid 1px;
+}
+
+.navbar {
+    background:cadetblue;
+}
+
+.hr-2 {
+    height: 2px;
+}
+
+.card {
+    border: 2px solid black;
+    border-radius: 2px
+}
+
+.card-body {
+    margin: 10px;
+}
+
+.card-header {
+    margin: 10px;
+}
+
