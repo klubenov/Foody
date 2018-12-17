@@ -1,0 +1,85 @@
+﻿@model Foody.Services.Models.Users.AllUsersRolesViewModel
+@{
+    ViewData["Title"] = "Roles";
+}
+
+<h2 class="text-center">Roles</h2>
+
+<hr class="hr-2" />
+<table class="table">
+    <thead class="">
+        <tr class="row ">
+            <th class="col-4 border-top-0">Username</th>
+            <th class="col-4 border-top-0">Role</th>
+            <th class="col-4 border-top-0">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.UserRoleViewModels)
+        {
+            if (this.User.Identity.Name == user.Username)
+            {
+                continue;
+            }
+            <tr class="row">
+                <th class="col-4 font-weight-normal">@user.Username</th>
+                <th class="col-4 font-weight-normal">@user.Roles.FirstOrDefault()</th>
+                <th class="col-4 font-weight-normal">
+                    @if (user.Roles.Contains("Admin"))
+                    {
+                        <form method="post" action="/Administration/Users/ChangeRole">
+                            <div class="justify-content-center">
+                                <input name="username" type="hidden" value="@user.Username" />
+                                <input name="role" type="hidden" value="User" />
+                                <button type="submit" class="btn btn-default">Demote to User</button>
+                            </div>
+                        </form>
+                        <form method="post" action="/Administration/Users/ChangeRole">
+                            <div class="justify-content-center">
+                                <input name="username" type="hidden" value="@user.Username" />
+                                <input name="role" type="hidden" value="Super-admin" />
+                                <button type="submit" class="btn btn-default">Promote ot Super-admin</button>
+                            </div>
+                        </form>
+                    }
+                    else if (user.Roles.Contains("User"))
+                    {
+                        <form method="post" action="/Administration/Users/ChangeRole">
+                            <div class="justify-content-center">
+                                <input name="username" type="hidden" value="@user.Username" />
+                                <input name="role" type="hidden" value="Admin" />
+                                <button type="submit" class="btn btn-default">Promote to Admin</button>
+                            </div>
+                        </form>
+                        <form method="post" action="/Administration/Users/ChangeRole">
+                            <div class="justify-content-center">
+                                <input name="username" type="hidden" value="@user.Username" />
+                                <input name="role" type="hidden" value="Super-admin" />
+                                <button type="submit" class="btn btn-default">Promote to Super-admin</button>
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+                        <form method="post" action="/Administration/Users/ChangeRole">
+                            <div class="justify-content-center">
+                                <input name="username" type="hidden" value="@user.Username" />
+                                <input name="role" type="hidden" value="User" />
+                                <button type="submit" class="btn btn-default">Demote to User</button>
+                            </div>
+                        </form>
+                        <form method="post" action="/Administration/Users/ChangeRole">
+                            <div class="justify-content-center">
+                                <input name="username" type="hidden" value="@user.Username" />
+                                <input name="role" type="hidden" value="Admin" />
+                                <button type="submit" class="btn btn-default">Demote to Admin</button>
+                            </div>
+                        </form>
+                    }
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr class="hr-2" />
+

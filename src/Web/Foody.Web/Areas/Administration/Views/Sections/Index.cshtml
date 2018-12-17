@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2 class="text-center">Welcome to the administrative area of the app.</h2>
+<hr class="hr-2" />
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h3>Users Management</h3>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">This section is for controlling the roles of the users. <strong color: red>It is available only for Super-admins.</strong></h5>
+                <p class="card-text">You can promote or demote users. You cannot demote yourself.</p>
+                @if (this.User.IsInRole("Super-admin"))
+                {
+                    <a href="/Administration/Users/UsersMenu" class="btn btn-primary">Enter section</a>
+                }
+                else
+                {
+                    <a class="btn btn-primary disabled">Restricted</a>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h3>Articles</h3>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">In this section you can post articles or approve them if you are Super-admin.</h5>
+                <p class="card-text">Articles for normal admins must first be approved by a Super-admin in order to appear on the home page.</p>
+                <a href="/Administration/Articles/ArticlesMenu" class="btn btn-primary">Enter section</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h3>Content</h3>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">This section is for adding content to the Diary tool.</h5>
+                <p class="card-text">You can add all of the nutrition types here.</p>
+                <a href="/Administration/Content/ContentMenu" class="btn btn-primary">Enter section</a>
+            </div>
+        </div>
+    </div>
+</div>
+<hr class="hr-2" />
+

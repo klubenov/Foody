@@ -1,0 +1,45 @@
+﻿@model Foody.Services.Models.Articles.ArticleForApprovalViewModel
+
+@{
+    ViewData["Title"] = "OpenForApproval";
+}
+
+<h2>OpenForApproval</h2>
+
+<div>
+    <h4>ArticleForApprovalViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PostedOn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PostedOn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Author)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ImageLocation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ImageLocation)
+        </dd>
+    </dl>
+</div>
+

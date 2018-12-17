@@ -1,0 +1,38 @@
+﻿@model Foody.Services.Models.Articles.AllArticlesForApprovalViewModel
+
+@{
+    ViewData["Title"] = "Articles for approval";
+}
+
+<h2 class="text-center">Articles for approval</h2>
+
+<hr class="hr-2" />
+<table class="table">
+    <thead class="">
+        <tr class="row ">
+            <th class="col-6 border-top-0">Title</th>
+            <th class="col-2 border-top-0">Author</th>
+            <th class="col-2 border-top-0">Posted On</th>
+            <th class="col-2 border-top-0">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var article in Model.ArticleForApprovalListViewModels)
+        {
+        <tr class="row">
+            <th class="col-6 font-weight-normal">@article.Title</th>
+            <th class="col-2 font-weight-normal">@article.Author</th>
+            <th class="col-2 font-weight-normal">@article.PostedOn.ToString("g")</th>
+            <th class="col-2 font-weight-normal">
+                <form method="post" action="/Administration/Articles/OpenForApproval">
+                    <div class="justify-content-center">
+                        <input name="articleId" type="hidden" value="@article.ArticleId" />
+                        <button type="submit" class="btn btn-default">Open</button>
+                    </div>
+                </form>
+            </th>
+        </tr>
+        }
+    </tbody>
+</table>
+<hr class="hr-2" />
