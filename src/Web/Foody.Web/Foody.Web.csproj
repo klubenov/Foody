@@ -20,9 +20,13 @@
 
   <ItemGroup>
     <Folder Include="Areas\Administration\Data\" />
+    <Folder Include="wwwroot\images\Articles\" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Areas\Administration\Views\Shared\_ValidationScriptsPartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Areas\Administration\Views\_ViewImports.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

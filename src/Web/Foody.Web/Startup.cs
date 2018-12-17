@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Foody.Data;
 using Foody.Data.Models;
+using Foody.Services.DataServices.Articles;
+using Foody.Services.DataServices.Images;
 using Foody.Services.DataServices.Menu;
 using Foody.Services.DataServices.Users;
 using Microsoft.AspNetCore.Builder;
@@ -54,6 +56,8 @@ namespace Foody.Web
 
             services.AddTransient<IMenuService, MenuService>();
             services.AddTransient<IUsersService, UsersService>();
+            services.AddTransient<IArticlesService, ArticlesService>();
+            services.AddTransient<IImagesService, ImagesService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

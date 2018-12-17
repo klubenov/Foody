@@ -264,6 +264,8 @@ namespace Foody.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime?>("ApprovedOn");
+
                     b.Property<string>("AuthorId");
 
                     b.Property<string>("Content");
@@ -277,6 +279,10 @@ namespace Foody.Data.Migrations
                     b.Property<bool>("IsSentForApproval");
 
                     b.Property<DateTime>("PostDate");
+
+                    b.Property<string>("RejectComment");
+
+                    b.Property<string>("RejectedByUserId");
 
                     b.Property<string>("Title");
 
