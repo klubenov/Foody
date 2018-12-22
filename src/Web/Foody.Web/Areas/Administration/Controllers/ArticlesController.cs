@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Foody.Data.Models;
 using Foody.Services.DataServices.Articles;
+using Foody.Services.DataServices.Common;
 using Foody.Services.DataServices.Menu;
 using Foody.Services.Models;
 using Foody.Services.Models.Articles;
@@ -14,23 +15,30 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Foody.Web.Areas.Administration.Controllers
 {
-    [Area("Administration")]
+    [Area(AreaName)]
     public class ArticlesController : Controller
     {
+        private const string AreaName = "Administration";
+        private const string ApprovalErrorMessage = "The article you are trying to approve either does not exist, or it is aleary approved. Please choose another article from the list below.";
+        private const string RejectionErrorMessage = "The article you are trying to reject either does not exist, or it is aleary rejected. Please choose another article from the list below.";
+        private const string InitialOpenCheckString = "TruestOfTheTrue";
+
         private readonly IMenuService menuService;
         private readonly IArticlesService articlesService;
+        private readonly IPaginationService paginationService;
 
-        public ArticlesController(IMenuService menuService, IArticlesService articlesService)
+        public ArticlesController(IMenuService menuService, IArticlesService articlesService, IPaginationService paginationService)
         {
             this.menuService = menuService;
             this.articlesService = articlesService;
+            this.paginationService = paginationService;
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin,Super-admin")]
         public IActionResult ArticlesMenu()
         {
-            var model = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), "Administration", null, null);
+            var model = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, null, null);
 
             return View(model);
         }
@@ -53,17 +61,31 @@ namespace Foody.Web.Areas.Administration.Controllers
 
             }
 
-            var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), "Administration", "Create_Article", model);
+            var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "Create_Article", model);
             return View("ArticlesMenu", reloadModel);
         }
 
         [HttpGet]
         [Authorize(Roles = "Super-admin")]
-        public IActionResult Articles_Awaiting_Approval()
+        public IActionResult Articles_Awaiting_Approval(int currentPage = 1, string initialOpen = InitialOpenCheckString, string errorMessage = null)
         {
+            // TODO: Optimize pagination content gathering
             var model = this.articlesService.GetAllArticlesForApproval();
 
-            return PartialView("Articles_Awaiting_Approval", model);
+            model = this.paginationService.GetPageModel<AllArticlesForApprovalViewModel, ArticleForApprovalListViewModel>(
+                    model, currentPage, this.GetType(), "Articles_Awaiting_Approval", typeof(AreaAttribute));
+
+            if (initialOpen == InitialOpenCheckString)
+            {
+                return PartialView("Articles_Awaiting_Approval", model);
+            }
+            else if (initialOpen == "false")
+            {
+                var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "Articles_Awaiting_Approval", model);
+                return View("ArticlesMenu", reloadModel);
+            }
+
+            return RedirectToAction("ArticlesMenu");
         }
 
         
@@ -72,9 +94,46 @@ namespace Foody.Web.Areas.Administration.Controllers
         {
             var article = articlesService.GetArticleForApproval(articleId);
 
-            var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), "Administration", "OpenForApproval", article);
+            var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "OpenForApproval", article);
 
             return View("ArticlesMenu", reloadModel);
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Super-admin")]
+        public IActionResult Approve(string articleId)
+        {
+            var approveResult = this.articlesService.ApproveArticle(articleId);
+
+            if (approveResult == false)
+            {
+                return RedirectToAction("Articles_Awaiting_Approval",
+                    new {currentPage = 1, initialOpen = false, errorMessage = ApprovalErrorMessage});
+            }
+
+            return RedirectToAction("Articles_Awaiting_Approval",
+                new { currentPage = 1, initialOpen = false });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Super-admin")]
+        public IActionResult Reject(string articleId, string rejectComment)
+        {
+            var rejectResult = this.articlesService.RejectArticle(articleId, rejectComment);
+
+            if (rejectResult == false)
+            {
+                return RedirectToAction("Articles_Awaiting_Approval",
+                    new { currentPage = 1, initialOpen = false, errorMessage = RejectionErrorMessage });
+            }
+
+            return RedirectToAction("Articles_Awaiting_Approval",
+                new { currentPage = 1, initialOpen = false });
+        }
+
+        //public IActionResult My_Articles()
+        //{
+
+        //}
     }
 }

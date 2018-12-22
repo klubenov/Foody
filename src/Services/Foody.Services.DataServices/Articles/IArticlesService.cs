@@ -12,5 +12,9 @@ namespace Foody.Services.DataServices.Articles
         AllArticlesForApprovalViewModel GetAllArticlesForApproval();
 
         ArticleForApprovalViewModel GetArticleForApproval(string id);
+
+        bool ApproveArticle(string articleId);
+
+        bool RejectArticle(string articleId, string rejectComment);
     }
 }

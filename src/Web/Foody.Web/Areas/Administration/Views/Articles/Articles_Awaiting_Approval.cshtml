@@ -5,20 +5,23 @@
 }
 
 <h2 class="text-center">Articles for approval</h2>
-
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div class="text-center text-danger">@Model.ErrorMessage</div>
+}
 <hr class="hr-2" />
 <table class="table">
     <thead class="">
-        <tr class="row ">
-            <th class="col-6 border-top-0">Title</th>
-            <th class="col-2 border-top-0">Author</th>
-            <th class="col-2 border-top-0">Posted On</th>
-            <th class="col-2 border-top-0">Actions</th>
-        </tr>
+    <tr class="row ">
+        <th class="col-6 border-top-0">Title</th>
+        <th class="col-2 border-top-0">Author</th>
+        <th class="col-2 border-top-0">Posted On</th>
+        <th class="col-2 border-top-0">Actions</th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var article in Model.ArticleForApprovalListViewModels)
-        {
+    @foreach (var article in Model.Items)
+    {
         <tr class="row">
             <th class="col-6 font-weight-normal">@article.Title</th>
             <th class="col-2 font-weight-normal">@article.Author</th>
@@ -32,7 +35,8 @@
                 </form>
             </th>
         </tr>
-        }
+    }
     </tbody>
 </table>
+<partial name="_PaginationPartial" model="Model.PaginationModel"/>
 <hr class="hr-2" />

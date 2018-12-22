@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Routing
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -28,6 +29,10 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
+                    @if (this.Context.Request.Path.Value.Contains("Menu"))
+                    {
+                        <a href="#menu-toggle" class="btn navbar-btn" id="menu-toggle">Toggle Menu</a>
+                    }
                     <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Foody</a>
                 </div>
                 <div class="navbar-collapse collapse">

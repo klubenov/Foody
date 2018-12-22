@@ -10,7 +10,7 @@ namespace Foody.Services.Models.Articles
     public class CreateArticleBindingModel
     {
         [Required]
-        [StringLength(50, MinimumLength = 10)]
+        [StringLength(100, MinimumLength = 10)]
         public string Title { get; set; }
 
         [Required]

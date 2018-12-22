@@ -1,45 +1,61 @@
-﻿@model Foody.Services.Models.Articles.ArticleForApprovalViewModel
+﻿@using Microsoft.AspNetCore.Routing
+@model Foody.Services.Models.Articles.ArticleForApprovalViewModel
 
 @{
     ViewData["Title"] = "OpenForApproval";
 }
 
-<h2>OpenForApproval</h2>
-
 <div>
-    <h4>ArticleForApprovalViewModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.PostedOn)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.PostedOn)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Author)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Author)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ImageLocation)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ImageLocation)
-        </dd>
-    </dl>
+    <h2>@Model.Title</h2>
+
+
+    <p class="lead">
+        by <a href="#">@Model.Author</a>
+    </p>
+
+    <hr class="hr-2" />
+
+
+    <p>Posted on: @Model.PostedOn.ToString("g")</p>
+
+    <hr class="hr-2" />
+
+    <img src="/Images/Get/location?location=@Model.ImageLocation" class="img-responsive" alt="image not available">
+
+    <hr class="hr-2" />
+
+    <p class="lead">@Model.Content</p>
+
+    <hr class="hr-2" />
+
+    <div class="container-fluid">
+        <div class="col-md-offset-3 col-md-6">
+            <form method="post" asp-action="Approve" asp-controller="Articles" asp-area="Administration">
+                <input name="articleId" type="hidden" value="@Model.Id" />
+                <div class="text-center form-group col-md-4 col-md-offset-4">
+                    <button type="submit" class="btn btn-success form-control">Approve</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <hr class="hr-2" />
+
+    <div class="container-fluid">
+        <div class="col-md-offset-3 col-md-6">
+            <form method="post" asp-action="Reject" asp-controller="Articles" asp-area="Administration">
+                <input name="articleId" type="hidden" value="@Model.Id" />
+                <div class="form-group text-center">
+                    <textarea class="form-control" rows="2" name="rejectComment" placeholder="Enter your reject comment here..."></textarea>
+                </div>
+                <div class="text-center form-group col-md-4 col-md-offset-4">
+                    <button type="submit" class="btn btn-danger form-control">Reject</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <hr class="hr-2" />
+
 </div>
 

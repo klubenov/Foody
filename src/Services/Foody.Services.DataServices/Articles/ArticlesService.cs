@@ -6,8 +6,10 @@ using System.Text;
 using Foody.Data;
 using Foody.Data.Models;
 using Foody.Data.Models.Publishing;
+using Foody.Services.DataServices.Common;
 using Foody.Services.DataServices.Images;
 using Foody.Services.Models.Articles;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
 namespace Foody.Services.DataServices.Articles
@@ -16,11 +18,13 @@ namespace Foody.Services.DataServices.Articles
     {
         private readonly FoodyDbContext context;
         private readonly IImagesService imagesService;
+        private readonly IPaginationService paginationService;
 
-        public ArticlesService(FoodyDbContext context, IImagesService imagesService)
+        public ArticlesService(FoodyDbContext context, IImagesService imagesService, IPaginationService paginationService)
         {
             this.context = context;
             this.imagesService = imagesService;
+            this.paginationService = paginationService;
         }
 
         public void CreateArticle(CreateArticleBindingModel createArticleBindingModel, string authorName)
@@ -37,6 +41,7 @@ namespace Foody.Services.DataServices.Articles
                 Content = createArticleBindingModel.Content,
                 Author = author,
                 PostDate = DateTime.UtcNow,
+                ApprovedOn = DateTime.UtcNow,
                 IsApproved = isAuthorSuperAdmin,
                 IsRejected = false,
                 IsSentForApproval = !isAuthorSuperAdmin
@@ -49,7 +54,7 @@ namespace Foody.Services.DataServices.Articles
             {
                 var articleId = this.context.Articles.First(a => a.Title == createArticleBindingModel.Title).Id;
 
-                var imageLocation = this.imagesService.CreateImage(createArticleBindingModel.Image, "Articles", articleId);
+                var imageLocation = this.imagesService.CreateImage(createArticleBindingModel.Image, this.GetType().Name.Replace("Service", string.Empty), articleId);
 
                 this.context.Articles.First(a => a.Id == articleId).ImageLocation = imageLocation;
                 context.SaveChanges();
@@ -65,12 +70,15 @@ namespace Foody.Services.DataServices.Articles
                     Title = a.Title,
                     Author = a.Author.UserName,
                     PostedOn = a.PostDate
-                }).ToList();
+                }).OrderBy(a => a.PostedOn).ToList();
 
             var allArticlesForApproval = new AllArticlesForApprovalViewModel
             {
-                ArticleForApprovalListViewModels = articlesForApproval
+                Items = articlesForApproval
             };
+
+
+            allArticlesForApproval.PaginationModel.TotalPages = paginationService.GetTotalPages(allArticlesForApproval.Items.Count());
 
             return allArticlesForApproval;
         }
@@ -81,6 +89,7 @@ namespace Foody.Services.DataServices.Articles
 
             var articleForApproval = new ArticleForApprovalViewModel
             {
+                Id = id,
                 Title = article.Title,
                 Author = article.Author.UserName,
                 Content = article.Content,
@@ -89,6 +98,41 @@ namespace Foody.Services.DataServices.Articles
             };
 
             return articleForApproval;
+        }
+
+        public bool ApproveArticle(string articleId)
+        {
+            var article = this.context.Articles.FirstOrDefault(a => a.Id == articleId);
+
+            if (article == null || article.IsApproved)
+            {
+                return false;
+            }
+
+            article.IsApproved = true;
+            article.IsSentForApproval = false;
+            article.ApprovedOn = DateTime.UtcNow;
+
+            context.SaveChanges();
+
+            return true;
+        }
+
+        public bool RejectArticle(string articleId, string rejectComment)
+        {
+            var article = this.context.Articles.FirstOrDefault(a => a.Id == articleId);
+
+            if (article == null || article.IsRejected)
+            {
+                return false;
+            }
+
+            article.IsRejected = true;
+            article.IsSentForApproval = false;
+
+            context.SaveChanges();
+
+            return true;
         }
     }
 }

@@ -15,7 +15,5 @@ namespace Foody.Web.Areas.Administration.Controllers
         {
             return View();
         }
-
-
     }
 }
