@@ -16,5 +16,9 @@ namespace Foody.Services.DataServices.Articles
         bool ApproveArticle(string articleId);
 
         bool RejectArticle(string articleId, string rejectComment);
+
+        AllMyApprovedArticlesViewModel GetAllApprovedArticlesByUsername(string username);
+
+        MyArticleViewModel GetMyArticleById(string articleId);
     }
 }

@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Foody.Services.Models.Shared;
 
 namespace Foody.Services.Models.Articles
 {
-    public class AllMyApprovedArticlesViewModel
+    public class AllMyApprovedArticlesViewModel : IPaginateable<MyApprovedArticlesListViewModel>
     {
         public AllMyApprovedArticlesViewModel()
         {
-            this.MyApprovedArticlesListViewModels = new List<MyApprovedArticlesListViewModel>();
+            this.PaginationModel = new PaginationModel();
         }
 
-        public List<MyApprovedArticlesListViewModel> MyApprovedArticlesListViewModels { get; set; }
+        public ICollection<MyApprovedArticlesListViewModel> Items { get; set; }
 
-        public int CurrentPage { get; set; }
-
-        public int TotalPages { get; set; }
+        public PaginationModel PaginationModel { get; set; }
     }
 }

@@ -131,9 +131,66 @@ namespace Foody.Web.Areas.Administration.Controllers
                 new { currentPage = 1, initialOpen = false });
         }
 
-        //public IActionResult My_Articles()
-        //{
+        [HttpGet]
+        [Authorize(Roles = "Super-admin")]
+        public IActionResult My_Articles(int currentPage = 1, string initialOpen = InitialOpenCheckString)
+        {
+            var model = this.articlesService.GetAllApprovedArticlesByUsername(this.User.Identity.Name);
 
-        //}
+            model = this.paginationService.GetPageModel<AllMyApprovedArticlesViewModel, MyApprovedArticlesListViewModel>(
+                    model, currentPage, this.GetType(), "My_Articles", typeof(AreaAttribute));
+
+            if (initialOpen == InitialOpenCheckString)
+            {
+                return PartialView("My_Articles", model);
+            }
+            else if (initialOpen == "false")
+            {
+                var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "My_Articles", model);
+                return View("ArticlesMenu", reloadModel);
+            }
+
+            return RedirectToAction("ArticlesMenu");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public IActionResult My_Approved_Articles(int currentPage = 1, string initialOpen = InitialOpenCheckString)
+        {
+            var model = this.articlesService.GetAllApprovedArticlesByUsername(this.User.Identity.Name);
+
+            model = this.paginationService.GetPageModel<AllMyApprovedArticlesViewModel, MyApprovedArticlesListViewModel>(
+                model, currentPage, this.GetType(), "My_Approved_Articles", typeof(AreaAttribute));
+
+            if (initialOpen == InitialOpenCheckString)
+            {
+                return PartialView("My_Approved_Articles", model);
+            }
+            else if (initialOpen == "false")
+            {
+                var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "My_Approved_Articles", model);
+                return View("ArticlesMenu", reloadModel);
+            }
+
+            return RedirectToAction("ArticlesMenu");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Super-admin")]
+        public IActionResult OpenMyArticle(string articleId, int currentPage, string sourceMethodName)
+        {
+            var article = this.articlesService.GetMyArticleById(articleId);
+
+            if (article == null)
+            {
+                return RedirectToAction("ArticlesMenu");
+            }
+
+            article.CurrentPage = currentPage;
+            article.SourceMethodName = sourceMethodName;
+
+            var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "OpenMyArticle", article);
+            return View("ArticlesMenu", reloadModel);
+        }
     }
 }

@@ -1,0 +1,39 @@
+﻿@model Foody.Services.Models.Articles.AllMyApprovedArticlesViewModel
+@{
+    ViewData["Title"] = "My Approved Articles";
+}
+
+<h2 class="text-center">My Approved Articles</h2>
+<hr class="hr-2" />
+<table class="table">
+    <thead class="">
+        <tr class="row ">
+            <th class="col-6 border-top-0">Title</th>
+            <th class="col-2 border-top-0">Posted On</th>
+            <th class="col-2 border-top-0">Approved On</th>
+            <th class="col-2 border-top-0">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var article in Model.Items)
+    {
+        <tr class="row">
+            <th class="col-6 font-weight-normal">@article.Title</th>
+            <th class="col-2 font-weight-normal">@article.PostedOn.ToString("g")</th>
+            <th class="col-2 font-weight-normal">@article.ApprovedOn.ToString("g")</th>
+            <th class="col-2 font-weight-normal">
+                <form method="post" action="/Administration/Articles/OpenMyArticle">
+                    <div class="justify-content-center">
+                        <input name="articleId" type="hidden" value="@article.ArticleId" />
+                        <input name="currentPage" type="hidden" value="@Model.PaginationModel.CurrentPage" />
+                        <input name="sourceMethodName" type="hidden" value="My_Approved_Articles" />
+                        <button type="submit" class="btn btn-success">Open</button>
+                    </div>
+                </form>
+            </th>
+        </tr>
+    }
+    </tbody>
+</table>
+<partial name="_PaginationPartial" model="Model.PaginationModel" />
+<hr class="hr-2" />

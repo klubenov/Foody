@@ -41,7 +41,6 @@ namespace Foody.Services.DataServices.Articles
                 Content = createArticleBindingModel.Content,
                 Author = author,
                 PostDate = DateTime.UtcNow,
-                ApprovedOn = DateTime.UtcNow,
                 IsApproved = isAuthorSuperAdmin,
                 IsRejected = false,
                 IsSentForApproval = !isAuthorSuperAdmin
@@ -86,6 +85,11 @@ namespace Foody.Services.DataServices.Articles
         public ArticleForApprovalViewModel GetArticleForApproval(string id)
         {
             var article = this.context.Articles.Include(a => a.Author).FirstOrDefault(a => a.Id == id);
+
+            if (article == null)
+            {
+                return null;
+            }
 
             var articleForApproval = new ArticleForApprovalViewModel
             {
@@ -133,6 +137,44 @@ namespace Foody.Services.DataServices.Articles
             context.SaveChanges();
 
             return true;
+        }
+
+        public AllMyApprovedArticlesViewModel GetAllApprovedArticlesByUsername(string username)
+        {
+            var myApprovedArticlesViewModels = this.context.Articles.Include(a => a.Author)
+                .Where(a => a.Author.UserName == username && a.IsApproved == true)
+                .Select(a => new MyApprovedArticlesListViewModel
+                {
+                    ArticleId = a.Id,
+                    ApprovedOn = a.ApprovedOn ?? a.PostDate,
+                    PostedOn = a.PostDate,
+                    Title = a.Title
+                }).OrderBy(a => a.PostedOn).ToList();
+
+            var allMyApprovedArticlesViewModel = new AllMyApprovedArticlesViewModel
+            {
+                Items = myApprovedArticlesViewModels
+            };
+
+            allMyApprovedArticlesViewModel.PaginationModel.TotalPages =
+                paginationService.GetTotalPages(allMyApprovedArticlesViewModel.Items.Count);
+
+            return allMyApprovedArticlesViewModel;
+        }
+
+        public MyArticleViewModel GetMyArticleById(string articleId)
+        {
+            var myArticleViewModel = this.context.Articles.Where(a => a.Id == articleId).Select(a => 
+                new MyArticleViewModel
+                {
+                    Title = a.Title,
+                    Content = a.Content,
+                    ApprovedOn = a.ApprovedOn,
+                    PostedOn = a.PostDate,
+                    ImageLocation = a.ImageLocation
+                }).FirstOrDefault();
+
+            return myArticleViewModel;
         }
     }
 }
