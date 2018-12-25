@@ -17,5 +17,7 @@ namespace Foody.Services.Models.Articles
         public string Author { get; set; }
 
         public string ImageLocation { get; set; }
+
+        public int CurrentPage { get; set; }
     }
 }

@@ -1,0 +1,62 @@
+﻿@model Foody.Services.Models.Articles.MyRejectedArticleViewModel
+@{
+    ViewData["Title"] = "My Rejected Article";
+}
+
+<h2 class="text-center">Edit and resend article</h2>
+
+<div class="col-md-offset-2 col-md-8">
+    <form method="post" asp-action="ResendForApproval" asp-controller="Articles" asp-area="Administration" enctype="multipart/form-data">
+        <hr class="hr-2" />
+        <div class="form-group text-center">
+            <label asp-for="RejectComment" class="text-center text-capitalize"></label>
+            <h2 class="text-center text-danger"><b>@Model.RejectComment</b></h2>
+            <input asp-for="RejectComment" type="hidden" value="@Model.RejectComment" />
+        </div>
+        <hr class="hr-2" />
+        <div class="form-group text-center">
+            <p>Posted on: @Model.PostedOn.ToString("g")</p>
+            <input asp-for="PostedOn" type="hidden" value="@Model.PostedOn" />
+            @if (Model.RejectedOn != null)
+            {
+                <p>Approved on: @Model.RejectedOn.Value.ToString("g")</p>
+                <input asp-for="RejectedOn" type="hidden" value="@Model.RejectedOn" />
+            }
+        </div>
+        <hr class="hr-2" />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group text-center">
+            <label asp-for="Title" class="text-center"></label>
+            <input asp-for="Title" class="form-control col-md-9" value="@Model.Title" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <input asp-for="Id" type="hidden" value="@Model.Id" />
+        <input asp-for="CurrentPage" type="hidden" value="@Model.CurrentPage" />
+        <hr class="hr-2" />
+        <div>
+            <img src="/Images/Get/location?location=@Model.ImageLocation" class="img-responsive center-block" alt="image not available">
+        </div>
+        <input asp-for="ImageLocation" type="hidden" value="@Model.ImageLocation" />
+        <hr class="hr-2" />
+        <div class="form-group text-center">
+            <label asp-for="Content" class="text-center"></label>
+            <textarea asp-for="Content" class="form-control" rows="20">@Model.Content</textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+        <hr class="hr-2" />
+        <div class="form-group text-center">
+            <label asp-for="NewImage" class="text-center">Choose new image if you want to replace the old one.</label>
+            <input type="file" asp-for="NewImage" class="form-control" />
+        </div>
+        <hr class="hr-2" />
+        <div class="text-center form-group col-md-4 col-md-offset-4">
+            <button type="submit" class="btn btn-success form-control">Send for approval</button>
+        </div>
+    </form>
+</div>
+
+<div class="col-md-offset-3 col-md-6">
+    <div class="text-center">
+        <a href="/Administration/Articles/My_Rejected_Articles?currentPage=@(Model.CurrentPage)&initialOpen=false" class="btn btn-danger text-center" role="button">Back</a>
+    </div>
+</div>

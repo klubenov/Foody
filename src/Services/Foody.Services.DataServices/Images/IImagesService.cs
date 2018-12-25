@@ -8,5 +8,7 @@ namespace Foody.Services.DataServices.Images
     public interface IImagesService
     {
         string CreateImage(IFormFile formFile, string folder, string id);
+
+        string RewriteImage(IFormFile modelNewImage, string folder, string imageLocation, string id);
     }
 }

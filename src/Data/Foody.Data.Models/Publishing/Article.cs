@@ -17,17 +17,19 @@ namespace Foody.Data.Models.Publishing
         public string AuthorId { get; set; }
         public FoodyUser Author { get; set; }
 
-        public string RejectedByUserId { get; set; }
-
         public DateTime PostDate { get; set; }
 
         public DateTime? ApprovedOn { get; set; }
+
+        public DateTime? RejectedOn { get; set; }
 
         public bool IsApproved { get; set; }
 
         public bool IsSentForApproval { get; set; }
 
         public bool IsRejected { get; set; }
+
+        public string RejectedByUser { get; set; }
 
         public string RejectComment { get; set; }
 

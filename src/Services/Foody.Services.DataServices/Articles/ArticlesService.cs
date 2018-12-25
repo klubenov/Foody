@@ -122,7 +122,7 @@ namespace Foody.Services.DataServices.Articles
             return true;
         }
 
-        public bool RejectArticle(string articleId, string rejectComment)
+        public bool RejectArticle(string articleId, string rejectComment, string rejectedBy)
         {
             var article = this.context.Articles.FirstOrDefault(a => a.Id == articleId);
 
@@ -133,6 +133,9 @@ namespace Foody.Services.DataServices.Articles
 
             article.IsRejected = true;
             article.IsSentForApproval = false;
+            article.RejectedOn = DateTime.UtcNow;
+            article.RejectComment = rejectComment;
+            article.RejectedByUser = rejectedBy;
 
             context.SaveChanges();
 
@@ -162,9 +165,9 @@ namespace Foody.Services.DataServices.Articles
             return allMyApprovedArticlesViewModel;
         }
 
-        public MyArticleViewModel GetMyArticleById(string articleId)
+        public MyArticleViewModel GetMyArticleById(string articleId, string username)
         {
-            var myArticleViewModel = this.context.Articles.Where(a => a.Id == articleId).Select(a => 
+            var myArticleViewModel = this.context.Articles.Include(a => a.Author).Where(a => a.Id == articleId && a.Author.UserName == username).Select(a => 
                 new MyArticleViewModel
                 {
                     Title = a.Title,
@@ -175,6 +178,71 @@ namespace Foody.Services.DataServices.Articles
                 }).FirstOrDefault();
 
             return myArticleViewModel;
+        }
+
+        public AllMyRejectedArticlesViewModel GetAllRejectedArticlesByUsername(string username)
+        {
+            var myRejectedArticlesViewModels = this.context.Articles.Include(a => a.Author)
+                .Where(a => a.Author.UserName == username && a.IsRejected == true)
+                .Select(a => new MyRejectedArticlesListViewModel
+                {
+                    ArticleId = a.Id,
+                    RejectedBy = a.RejectedByUser,
+                    PostedOn = a.PostDate,
+                    LastRejectOn = a.RejectedOn.Value,
+                    Title = a.Title
+                }).OrderBy(a => a.LastRejectOn).ToList();
+
+            var allMyRejectedArticlesViewModel = new AllMyRejectedArticlesViewModel
+            {
+                Items = myRejectedArticlesViewModels
+            };
+
+            allMyRejectedArticlesViewModel.PaginationModel.TotalPages =
+                paginationService.GetTotalPages(allMyRejectedArticlesViewModel.Items.Count);
+
+            return allMyRejectedArticlesViewModel;
+        }
+
+        public MyRejectedArticleViewModel GetMyRejectedArticleById(string articleId, string username)
+        {
+            var myRejectedArticle = this.context.Articles.Include(a => a.Author)
+                .Where(a => a.Id == articleId && a.Author.UserName == username && a.IsRejected).Select(a =>
+                    new MyRejectedArticleViewModel
+                    {
+                        Id = a.Id,
+                        Content = a.Content,
+                        Title = a.Title,
+                        ImageLocation = a.ImageLocation,
+                        PostedOn = a.PostDate,
+                        RejectedOn = a.RejectedOn,
+                        RejectComment = a.RejectComment
+                    }).FirstOrDefault();
+
+            return myRejectedArticle;
+        }
+
+        public Article EditArticleAndResendForApproval(MyRejectedArticleViewModel model)
+        {
+            var article = this.context.Articles.FirstOrDefault(a => a.Id == model.Id);
+            if (article == null)
+            {
+                return null;
+            }
+
+            article.Title = model.Title;
+            article.Content = model.Content;
+            article.IsRejected = false;
+            article.IsSentForApproval = true;
+
+            if (model.NewImage != null)
+            {
+                string newImageLocation = this.imagesService.RewriteImage(model.NewImage, this.GetType().Name.Replace("Service", string.Empty), model.ImageLocation, model.Id);
+                article.ImageLocation = newImageLocation;
+            }
+
+            context.SaveChanges();
+            return article;
         }
     }
 }

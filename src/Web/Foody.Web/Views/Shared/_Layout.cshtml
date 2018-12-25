@@ -29,7 +29,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    @if (this.Context.Request.Path.Value.Contains("Menu"))
+                    @if (this.Context.Request.Path.Value.Contains("Menu") || this.Context.Response.ToString().Contains("sidebar-nav"))
                     {
                         <a href="#menu-toggle" class="btn navbar-btn" id="menu-toggle">Toggle Menu</a>
                     }

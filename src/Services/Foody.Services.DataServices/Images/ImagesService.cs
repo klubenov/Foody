@@ -21,12 +21,40 @@ namespace Foody.Services.DataServices.Images
             var fileLocation = $"\\images\\{folder}\\" + $"{id}.jpg";
             var fileName = this.environment.WebRootPath + fileLocation;
 
-            using (var fileStream = new FileStream(fileName, FileMode.Create))
+            using (var fileStream = new FileStream(fileName, FileMode.CreateNew))
             {
                 formFile.CopyTo(fileStream);
             }
 
             return fileLocation;
+        }
+
+        public string RewriteImage(IFormFile formFile, string folder, string imageLocation, string id)
+        {
+            var fileName = this.environment.WebRootPath + imageLocation;
+
+            if (File.Exists(fileName))
+            {
+                if (fileName.Contains("version="))
+                {
+                    var version = int.Parse(fileName.Split("version=")[1].Replace(".jpg", string.Empty));
+                    version++;
+                    imageLocation = $"\\images\\{folder}\\" + $"{id}version={version}.jpg";
+                    fileName = this.environment.WebRootPath + imageLocation;
+                }
+                else
+                {
+                    imageLocation = $"\\images\\{folder}\\" + $"{id}version=1.jpg";
+                    fileName = this.environment.WebRootPath + imageLocation;
+                }
+            }
+
+            using (var fileStream = new FileStream(fileName, FileMode.CreateNew))
+            {
+                formFile.CopyTo(fileStream);
+            }
+
+            return imageLocation;
         }
     }
 }

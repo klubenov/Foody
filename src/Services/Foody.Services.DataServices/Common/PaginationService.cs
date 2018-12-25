@@ -11,6 +11,11 @@ namespace Foody.Services.DataServices.Common
     {
         public int GetTotalPages(int totalItems)
         {
+            if (totalItems == 0)
+            {
+                return 1;
+            }
+
             if (totalItems % Constants.ArticlesPageCount == 0)
             {
                 return totalItems / Constants.ArticlesPageCount;

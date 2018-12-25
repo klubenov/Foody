@@ -20,7 +20,7 @@
                 <th class="col-6 font-weight-normal">@article.Title</th>
                 <th class="col-3 font-weight-normal">@article.PostedOn.ToString("g")</th>
                 <th class="col-3 font-weight-normal">
-                    <form method="post" action="/Administration/Articles/OpenMyArticle">
+                    <form asp-action="OpenMyArticle" asp-controller="Articles" asp-area="Administration" method="post">
                         <div class="justify-content-center">
                             <input name="articleId" type="hidden" value="@article.ArticleId" />
                             <input name="currentPage" type="hidden" value="@Model.PaginationModel.CurrentPage" />

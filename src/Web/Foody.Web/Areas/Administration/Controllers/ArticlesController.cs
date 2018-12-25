@@ -39,7 +39,7 @@ namespace Foody.Web.Areas.Administration.Controllers
         public IActionResult ArticlesMenu()
         {
             var model = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, null, null);
-
+            
             return View(model);
         }
 
@@ -52,6 +52,7 @@ namespace Foody.Web.Areas.Administration.Controllers
         
         [HttpPost]
         [Authorize(Roles = "Admin,Super-admin")]
+        [ValidateAntiForgeryToken]
         public IActionResult Create_Article(CreateArticleBindingModel model)
         {
             if (this.ModelState.IsValid)
@@ -88,11 +89,20 @@ namespace Foody.Web.Areas.Administration.Controllers
             return RedirectToAction("ArticlesMenu");
         }
 
-        
+        [HttpPost]
         [Authorize(Roles = "Super-admin")]
-        public IActionResult OpenForApproval(string articleId)
+        [Route("/" + AreaName + "/ArticlesMenu/OpenForApproval")]
+        [ValidateAntiForgeryToken]
+        public IActionResult OpenForApproval(string articleId, int currentPage)
         {
             var article = articlesService.GetArticleForApproval(articleId);
+
+            if (article == null)
+            {
+                return RedirectToAction("ArticlesMenu");
+            }
+
+            article.CurrentPage = currentPage;
 
             var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "OpenForApproval", article);
 
@@ -101,6 +111,7 @@ namespace Foody.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Super-admin")]
+        [ValidateAntiForgeryToken]
         public IActionResult Approve(string articleId)
         {
             var approveResult = this.articlesService.ApproveArticle(articleId);
@@ -117,9 +128,10 @@ namespace Foody.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Super-admin")]
+        [ValidateAntiForgeryToken]
         public IActionResult Reject(string articleId, string rejectComment)
         {
-            var rejectResult = this.articlesService.RejectArticle(articleId, rejectComment);
+            var rejectResult = this.articlesService.RejectArticle(articleId, rejectComment, this.User.Identity.Name);
 
             if (rejectResult == false)
             {
@@ -177,9 +189,11 @@ namespace Foody.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,Super-admin")]
+        [ValidateAntiForgeryToken]
+        [Route("/" + AreaName + "/ArticlesMenu/OpenMyArticle")]
         public IActionResult OpenMyArticle(string articleId, int currentPage, string sourceMethodName)
         {
-            var article = this.articlesService.GetMyArticleById(articleId);
+            var article = this.articlesService.GetMyArticleById(articleId, this.User.Identity.Name);
 
             if (article == null)
             {
@@ -190,6 +204,62 @@ namespace Foody.Web.Areas.Administration.Controllers
             article.SourceMethodName = sourceMethodName;
 
             var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "OpenMyArticle", article);
+            return View("ArticlesMenu", reloadModel);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public IActionResult My_Rejected_Articles(int currentPage = 1, string initialOpen = InitialOpenCheckString)
+        {
+            var model = this.articlesService.GetAllRejectedArticlesByUsername(this.User.Identity.Name);
+
+            model = this.paginationService.GetPageModel<AllMyRejectedArticlesViewModel, MyRejectedArticlesListViewModel>(
+                    model, currentPage, this.GetType(), "My_Rejected_Articles", typeof(AreaAttribute));
+
+            if (initialOpen == InitialOpenCheckString)
+            {
+                return PartialView("My_Rejected_Articles", model);
+            }
+
+            else if (initialOpen == "false")
+            {
+                var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "My_Rejected_Articles", model);
+                return View("ArticlesMenu", reloadModel);
+            }
+
+            return RedirectToAction("ArticlesMenu");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public IActionResult OpenMyRejectedArticle(string articleId, int currentPage)
+        {
+            var article = this.articlesService.GetMyRejectedArticleById(articleId, this.User.Identity.Name);
+
+            if (article == null)
+            {
+                return RedirectToAction("ArticlesMenu");
+            }
+
+            article.CurrentPage = currentPage;
+
+            var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "OpenMyRejectedArticle", article);
+            return View("ArticlesMenu", reloadModel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public IActionResult ResendForApproval(MyRejectedArticleViewModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                this.articlesService.EditArticleAndResendForApproval(model);
+                return RedirectToAction("ArticlesMenu");
+            }
+
+            var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "OpenMyRejectedArticle", model);
             return View("ArticlesMenu", reloadModel);
         }
     }

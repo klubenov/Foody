@@ -27,9 +27,10 @@
             <th class="col-2 font-weight-normal">@article.Author</th>
             <th class="col-2 font-weight-normal">@article.PostedOn.ToString("g")</th>
             <th class="col-2 font-weight-normal">
-                <form method="post" action="/Administration/Articles/OpenForApproval">
+                <form asp-action="OpenForApproval" asp-controller="Articles" asp-area="Administration" method="post">
                     <div class="justify-content-center">
                         <input name="articleId" type="hidden" value="@article.ArticleId" />
+                        <input name="currentPage" type="hidden" value="@Model.PaginationModel.CurrentPage" />
                         <button type="submit" class="btn btn-success">Open</button>
                     </div>
                 </form>
