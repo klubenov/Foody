@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Foody.Data.Models.FoodDiary
@@ -11,6 +12,7 @@ namespace Foody.Data.Models.FoodDiary
             this.Meals = new HashSet<Meal>();
         }
 
+        [Required]
         public string Name { get; set; }
 
         public string FoodyUserId { get; set; }

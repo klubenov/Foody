@@ -1,0 +1,91 @@
+﻿@model Foody.Services.Models.Menu.MenuViewModel
+@{
+    ViewData["Title"] = "Content Menu";
+}
+
+<div id="wrapper">
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="/Administration/Sections/Index">
+                    << Back
+                </a>
+            </li>
+            <li class="sidebar-brand">
+                <a href="#">
+                    Content Management
+                </a>
+            </li>
+            @foreach (var item in Model.MenuItemViewModels)
+            {
+                foreach (var role in item.AvailableToRoles)
+                {
+                    var isUserInRole = User.IsInRole(role);
+                    if (isUserInRole)
+                    {
+            <li>
+                <a href="#@item.AreaName@item.ControllerName@item.ActionName" id="@item.AreaName@item.ControllerName@item.ActionName">@item.ActionName.Replace("_", " ")</a>
+            </li>
+                        break;
+                    }
+                }
+
+            }
+        </ul>
+    </div>
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            
+                <div class="col-lg-12" id="Display">
+                    @if (Model.SelectedPartial == null)
+                    {
+                    <h2 class="text-center"> Please choose an option from the menu.</h2>
+                    }
+                    else if (Model.PreLoadedModel == null)
+                    {
+                    <div id="DisplayPreloaded"></div>
+                    }
+                    else
+                    {
+                    <partial name="@Model.SelectedPartial" model="@(Model.PreLoadedModel)" />
+                    }
+                </div>
+            
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script>
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
+
+    @if (Model.SelectedPartial != null && Model.PreLoadedModel == null)
+    {
+    <script type="text/javascript">
+            $(document).ready(function(actionName, controllerName, areaName){
+                $.get('@Url.Action(Model.MenuItemViewModels.First(mi => mi.ActionName == Model.SelectedPartial).ActionName,
+                           Model.MenuItemViewModels.First(mi => mi.ActionName == Model.SelectedPartial).ControllerName,
+                           new { Area = Model.MenuItemViewModels.First(mi => mi.ActionName == Model.SelectedPartial).AreaName })', {}, function (response) {
+                    $("#DisplayPreloaded").html(response);
+                });
+            });
+    </script>
+    }
+
+    @foreach (var item in Model.MenuItemViewModels)
+    {
+    <script type="text/javascript">
+            $("#@item.AreaName@item.ControllerName@item.ActionName").click(function () {
+                $.get('@Url.Action(item.ActionName, item.ControllerName, new { Area = item.AreaName })', {}, function (response) {
+                    $("#Display").html(response);
+                });
+            });
+    </script>
+    }
+
+}

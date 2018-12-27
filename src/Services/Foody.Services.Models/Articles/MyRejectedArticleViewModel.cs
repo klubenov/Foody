@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using Foody.Services.Models.Shared;
 using Microsoft.AspNetCore.Http;
 
 namespace Foody.Services.Models.Articles
@@ -11,13 +12,14 @@ namespace Foody.Services.Models.Articles
         [Required]
         public string Id { get; set; }
 
-        [Required]
-        [StringLength(100, MinimumLength = 10)]
+        [Required(ErrorMessage = Constants.ArticleTitleMissingErrorMessage)]
+        [StringLength(Constants.ArticleTitleMaxLength, MinimumLength = Constants.ArticleTitleMinLength, ErrorMessage = Constants.ArticleTitleLengthErrorMessage)]
         public string Title { get; set; }
 
-        [Required]
-        [StringLength(5000, MinimumLength = 50)]
+        [Required(ErrorMessage = Constants.ArticleContentMissingErrorMessage)]
+        [StringLength(Constants.ArticleContentMaxLength, MinimumLength = Constants.ArticleContentMinLength, ErrorMessage = Constants.ArticleContentLengthErrorMessage)]
         public string Content { get; set; }
+
 
         [Required]
         public DateTime PostedOn { get; set; }

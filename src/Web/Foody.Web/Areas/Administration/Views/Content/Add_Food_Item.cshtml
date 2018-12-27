@@ -1,0 +1,141 @@
+﻿@model Foody.Services.Models.Content.AddFoodItemBindingModel
+@{
+    ViewData["Title"] = "Add Food Item";
+}
+
+<h2 class="text-center">Add Food Item</h2>
+
+<div class="col-md-offset-1 col-md-10">
+    <form method="post" asp-action="Add_Food_Item" asp-controller="Content" asp-area="Administration" autocomplete="off" enctype="multipart/form-data">
+        <hr class="hr-2" />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-offset-4 col-md-4 form-group text-center">
+                <label asp-for="Name" class="text-center"></label>
+                <input asp-for="Name" class="form-control" placeholder="Choose name..." />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        <hr class="hr-2" />
+        <div class="form-group text-center">
+            <label asp-for="Description" class="text-center"></label>
+            <textarea asp-for="Description" class="form-control" rows="10" placeholder="Description..."></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <hr class="hr-2" />
+        <div class="row">
+            <div class="col-md-offset-4 col-md-4 form-group text-center">
+                <label asp-for="Image" class="text-center">Choose article image...</label>
+                <input type="file" asp-for="Image" class="form-control" />
+            </div>
+        </div>
+        <hr class="hr-2" />
+        <h3 class="text-center">Enter the food item content</h3>
+        @if (Model == null)
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group text-center">
+                        <h4 class="text-center">Enter the desired amount of each micro element in milligrams (up to 5000mg).</h4>
+                        @{ List<string> MicroElementsNames = ViewData["MicroElementsNames"] as List<string>;}
+                        @for (int i = 0; i < MicroElementsNames.Count; i++)
+                        {
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label asp-for="MicroElements[i].Name" class="text-center">@MicroElementsNames[i]</label>
+                                    <input type="hidden" asp-for="MicroElements[i].Name" value="@MicroElementsNames[i]" class="form-control" />
+                                    <span asp-validation-for="MicroElements[i].Name" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" asp-for="MicroElements[i].AmountInMilligramsPer100Grams" value="0" pattern="^[0-9]+$|^[0-9]+.[0-9]+$" class="form-control" />
+                                    <span asp-validation-for="MicroElements[i].AmountInMilligramsPer100Grams" class="text-danger"></span>
+                                </div>
+                            </div>
+                            if (i + 1 != MicroElementsNames.Count)
+                            {
+                                <hr class="hr-2" />
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h4 class="text-center">Enter the desired amount of each macro element in grams (up to 100g).</h4>
+                    @{ List<string> MacroElementsNames = ViewData["MacroElementsNames"] as List<string>;}
+                    @for (int i = 0; i < MacroElementsNames.Count; i++)
+                    {
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label asp-for="MacroElements[i].Name" class="text-center">@MacroElementsNames[i]</label>
+                                <input type="hidden" asp-for="MacroElements[i].Name" value="@MacroElementsNames[i]" class="form-control" />
+                                <span asp-validation-for="MacroElements[i].Name" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" asp-for="MacroElements[i].AmountInGramsPer100Grams" value="0" pattern="^[0-9]+$|^[0-9]+.[0-9]+$" class="form-control" />
+                                <span asp-validation-for="MacroElements[i].AmountInGramsPer100Grams" class="text-danger"></span>
+                            </div>
+                        </div>
+                        if (i + 1 != MacroElementsNames.Count)
+                        {
+                            <hr class="hr-2" />
+                        }
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group text-center">
+                        <h4 class="text-center">Enter the desired amount of each micro element in milligrams (up to 5000mg).</h4>
+                        
+                        @for (int i = 0; i < Model.MicroElements.Count; i++)
+                        {
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label asp-for="MicroElements[i].Name" class="text-center">@Model.MicroElements[i].Name</label>
+                                    <input type="hidden" asp-for="MicroElements[i].Name" value="@Model.MicroElements[i].Name" class="form-control" />
+                                    <span asp-validation-for="MicroElements[i].Name" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" asp-for="MicroElements[i].AmountInMilligramsPer100Grams" value="@(Model.MicroElements[i].AmountInMilligramsPer100Grams)" pattern="^[0-9]+$|^[0-9]+.[0-9]+$" class="form-control" />
+                                    <span asp-validation-for="MicroElements[i].AmountInMilligramsPer100Grams" class="text-danger"></span>
+                                </div>
+                            </div>
+                            if (i + 1 != Model.MicroElements.Count)
+                            {
+                                <hr class="hr-2" />
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h4 class="text-center">Enter the desired amount of each macro element in grams (up to 100g).</h4>
+
+                    @for (int i = 0; i < Model.MacroElements.Count; i++)
+                    {
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label asp-for="MacroElements[i].Name" class="text-center">@Model.MacroElements[i].Name</label>
+                                <input type="hidden" asp-for="MacroElements[i].Name" value="@Model.MacroElements[i].Name" class="form-control" />
+                                <span asp-validation-for="MacroElements[i].Name" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" asp-for="MacroElements[i].AmountInGramsPer100Grams" value="@(Model.MacroElements[i].AmountInGramsPer100Grams)" pattern="^[0-9]+$|^[0-9]+.[0-9]+$" class="form-control" />
+                                <span asp-validation-for="MacroElements[i].AmountInGramsPer100Grams" class="text-danger"></span>
+                            </div>
+                        </div>
+                        if (i + 1 != Model.MacroElements.Count)
+                        {
+                            <hr class="hr-2" />
+                        }
+                    }
+                </div>
+            </div>
+        }
+        <hr class="hr-2" />
+        <div class="text-center form-group col-md-4 col-md-offset-4">
+            <button type="submit" class="btn btn-success form-control">Add</button>
+        </div>
+    </form>
+</div>

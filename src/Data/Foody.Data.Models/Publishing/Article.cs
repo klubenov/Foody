@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Foody.Data.Models.Publishing
 {
@@ -10,8 +11,10 @@ namespace Foody.Data.Models.Publishing
             this.Comments = new HashSet<Comment>();
         }
 
+        [Required]
         public string Title { get; set; }
 
+        [Required]
         public string Content { get; set; }
 
         public string AuthorId { get; set; }

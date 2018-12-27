@@ -36,6 +36,13 @@ namespace Foody.Data
 
             builder.Entity<FoodItemMicroElement>().HasKey(pk => new {pk.FoodItemId, pk.MicroElementId});
 
+            builder.Entity<Article>().HasIndex(a => a.Title).IsUnique();
+            builder.Entity<MicroElement>().HasIndex(me => me.Name).IsUnique();
+            builder.Entity<MacroElement>().HasIndex(me => me.Name).IsUnique();
+            builder.Entity<Recipe>().HasIndex(r => r.Name).IsUnique();
+            builder.Entity<FoodItem>().HasIndex(fi => fi.Name).IsUnique();
+
+
             builder.Entity<FoodItemMicroElement>()
                 .HasOne(fime => fime.FoodItem)
                 .WithMany(fi => fi.FoodItemMicroElements)

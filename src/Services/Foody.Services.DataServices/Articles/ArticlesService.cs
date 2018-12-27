@@ -27,7 +27,7 @@ namespace Foody.Services.DataServices.Articles
             this.paginationService = paginationService;
         }
 
-        public void CreateArticle(CreateArticleBindingModel createArticleBindingModel, string authorName)
+        public Article CreateArticle(CreateArticleBindingModel createArticleBindingModel, string authorName)
         {
             var author = this.context.Users.Single(u => u.UserName == authorName);
             var roleId = this.context.UserRoles.First(ur => ur.UserId == author.Id).RoleId;
@@ -56,8 +56,11 @@ namespace Foody.Services.DataServices.Articles
                 var imageLocation = this.imagesService.CreateImage(createArticleBindingModel.Image, this.GetType().Name.Replace("Service", string.Empty), articleId);
 
                 this.context.Articles.First(a => a.Id == articleId).ImageLocation = imageLocation;
+                article.ImageLocation = imageLocation;
                 context.SaveChanges();
             }
+
+            return article;
         }
 
         public AllArticlesForApprovalViewModel GetAllArticlesForApproval()

@@ -8,7 +8,7 @@ namespace Foody.Services.DataServices.Articles
 {
     public interface IArticlesService
     {
-        void CreateArticle(CreateArticleBindingModel createArticleBindingModel, string authorName);
+        Article CreateArticle(CreateArticleBindingModel createArticleBindingModel, string authorName);
 
         AllArticlesForApprovalViewModel GetAllArticlesForApproval();
 

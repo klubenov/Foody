@@ -1,0 +1,48 @@
+﻿@model Foody.Services.Models.Content.AddMicroElementBindingModel
+@{
+    ViewData["Title"] = "Add Micro Element";
+}
+
+<h2 class="text-center">Add Micro Element</h2>
+
+<div class="col-md-offset-1 col-md-10">
+    <form method="post" asp-action="Add_Micro_Element" asp-controller="Content" asp-area="Administration" enctype="multipart/form-data">
+        <hr class="hr-2" />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-offset-4 col-md-4 form-group text-center">
+                <label asp-for="Name" class="text-center"></label>
+                <input asp-for="Name" class="form-control col-md-9" placeholder="Choose name..." />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        <hr class="hr-2" />
+        <div class="form-group text-center">
+            <label asp-for="Description" class="text-center"></label>
+            <textarea asp-for="Description" class="form-control" rows="10" placeholder="Description..."></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <hr class="hr-2" />
+        <h4 class="text-center">Please select type:</h4>
+        <div class="form-group text-center">
+            <input asp-for="Type" type="radio" id="vitamin" value="Vitamin">
+            <label for="vitamin">Vitamin</label>
+
+            <input asp-for="Type" type="radio" id="mineral" value="Mineral">
+            <label for="mineral">Mineral</label>
+
+            <input asp-for="Type" type="radio" id="other" value="Other">
+            <label for="other">Other</label>
+            <span asp-validation-for="Type" class="text-danger"></span>
+        </div>
+        <hr class="hr-2" />
+        <div class="form-group text-center">
+            <label asp-for="Image" class="text-center">Choose article image...</label>
+            <input type="file" asp-for="Image" class="form-control" />
+        </div>
+        <hr class="hr-2" />
+        <div class="text-center form-group col-md-4 col-md-offset-4">
+            <button type="submit" class="btn btn-success form-control">Add</button>
+        </div>
+    </form>
+</div>
