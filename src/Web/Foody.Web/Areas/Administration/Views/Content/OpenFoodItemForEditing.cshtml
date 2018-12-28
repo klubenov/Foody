@@ -1,0 +1,100 @@
+﻿@model Foody.Services.Models.Content.EditFoodItemViewModel
+@{
+    ViewData["Title"] = "Edit Food Item";
+}
+
+<h2 class="text-center">Edit Food Item</h2>
+
+<div class="col-md-offset-1 col-md-10">
+    <form method="post" asp-action="EditFoodItem" asp-controller="Content" asp-area="Administration" autocomplete="off" enctype="multipart/form-data">
+        <hr class="hr-2" />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-offset-4 col-md-4 form-group text-center">
+                <label asp-for="Name" class="text-center"></label>
+                <input asp-for="Name" class="form-control" placeholder="Choose name..." />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        <hr class="hr-2" />
+        <div class="form-group text-center">
+            <label asp-for="Description" class="text-center"></label>
+            <textarea asp-for="Description" class="form-control" rows="10" placeholder="Description..."></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <hr class="hr-2" />
+        <img src="/Images/Get/location?location=@Model.ImageLocation" class="img-responsive center-block" alt="image not available">
+        <input type="hidden" asp-for="ImageLocation" value="@Model.ImageLocation" class="form-control" />
+        <hr class="hr-2" />
+        <div class="row">
+            <div class="col-md-offset-4 col-md-4 form-group text-center">
+                <label asp-for="NewImage" class="text-center">Choose new image (optional)...</label>
+                <input type="file" asp-for="NewImage" class="form-control" />
+            </div>
+        </div>
+        <input type="hidden" asp-for="Id" value="@Model.Id" class="form-control" />
+        <input type="hidden" asp-for="CurrentPage" value="@Model.CurrentPage" class="form-control" />
+        <input type="hidden" asp-for="SearchText" value="@Model.SearchText" class="form-control" />
+        <hr class="hr-2" />
+        <h3 class="text-center">Enter the food item content</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group text-center">
+                    <h4 class="text-center">Enter the desired amount of each micro element in milligrams (up to 5000mg).</h4>
+
+                    @for (int i = 0; i < Model.MicroElements.Count; i++)
+                    {
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label asp-for="MicroElements[i].Name" class="text-center">@Model.MicroElements[i].Name</label>
+                                <input type="hidden" asp-for="MicroElements[i].Name" value="@Model.MicroElements[i].Name" class="form-control" />
+                                <span asp-validation-for="MicroElements[i].Name" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" asp-for="MicroElements[i].AmountInMilligramsPer100Grams" value="@(Model.MicroElements[i].AmountInMilligramsPer100Grams)" pattern="^[0-9]+$|^[0-9]+.[0-9]+$" class="form-control" />
+                                <span asp-validation-for="MicroElements[i].AmountInMilligramsPer100Grams" class="text-danger"></span>
+                            </div>
+                        </div>
+                        if (i + 1 != Model.MicroElements.Count)
+                        {
+                            <hr class="hr-2" />
+                        }
+                    }
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h4 class="text-center">Enter the desired amount of each macro element in grams (up to 100g).</h4>
+
+                @for (int i = 0; i < Model.MacroElements.Count; i++)
+                {
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label asp-for="MacroElements[i].Name" class="text-center">@Model.MacroElements[i].Name</label>
+                            <input type="hidden" asp-for="MacroElements[i].Name" value="@Model.MacroElements[i].Name" class="form-control" />
+                            <span asp-validation-for="MacroElements[i].Name" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" asp-for="MacroElements[i].AmountInGramsPer100Grams" value="@(Model.MacroElements[i].AmountInGramsPer100Grams)" pattern="^[0-9]+$|^[0-9]+.[0-9]+$" class="form-control" />
+                            <span asp-validation-for="MacroElements[i].AmountInGramsPer100Grams" class="text-danger"></span>
+                        </div>
+                    </div>
+                    if (i + 1 != Model.MacroElements.Count)
+                    {
+                        <hr class="hr-2" />
+                    }
+                }
+            </div>
+        </div>
+        <hr class="hr-2" />
+
+        <div class="row form-group">
+            <div class="col-md-offset-2 col-md-3">
+                <button type="submit" class="btn btn-success form-control">Edit</button>
+            </div>
+            <div class="col-md-offset-2 col-md-3">
+                <a href="/Administration/Content/Edit_Food_Items?currentPage=@(Model.CurrentPage)&initialOpen=false&searchText=@Model.SearchText" class="btn btn-danger form-control" role="button">Cancel</a>
+            </div>
+        </div>
+
+    </form>
+</div>

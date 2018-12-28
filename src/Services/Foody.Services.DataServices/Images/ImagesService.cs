@@ -31,6 +31,11 @@ namespace Foody.Services.DataServices.Images
 
         public string RewriteImage(IFormFile formFile, string folder, string imageLocation, string id)
         {
+            if (string.IsNullOrEmpty(imageLocation))
+            {
+                return this.CreateImage(formFile, folder, id);
+            }
+
             var fileName = this.environment.WebRootPath + imageLocation;
 
             if (File.Exists(fileName))
