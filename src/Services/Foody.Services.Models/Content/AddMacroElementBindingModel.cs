@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Foody.Services.Models.Content
 {
-    public class AddMicroElementBindingModel
+    public class AddMacroElementBindingModel
     {
         [Required]
         [StringLength(Constants.NutritionItemNameMaxLength, MinimumLength = Constants.NutritionItemNameMinLength, ErrorMessage = Constants.NutritionItemNameLengthErrorMessage)]
@@ -16,9 +16,9 @@ namespace Foody.Services.Models.Content
         [StringLength(Constants.NutritionItemDescriptionMaxLength, MinimumLength = Constants.NutritionItemDescriptionMinLength, ErrorMessage = Constants.NutritionItemDescriptionLengthErrorMessage)]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "You must select type.")]
-        [RegularExpression("^Vitamin$|^Mineral$|^Other$", ErrorMessage = "Invalid type.")]
-        public string Type { get; set; }
+        [Required(ErrorMessage = Constants.MacroElementCaloricContentMissingErrorMessage)]
+        [Range(Constants.MacroElementMinCaloricContent, Constants.MacroElementMaxCaloricContent, ErrorMessage = Constants.MacroElementCaloricContentRangeErrorMessage)]
+        public double CaloricContentPerGram { get; set; }
 
         public IFormFile Image { get; set; }
     }

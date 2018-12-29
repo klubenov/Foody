@@ -11,5 +11,7 @@ namespace Foody.Services.Models.Shared
         public int TotalPages { get; set; }
 
         public string PageLink { get; set; }
+
+        public string SearchText { get; set; }
     }
 }

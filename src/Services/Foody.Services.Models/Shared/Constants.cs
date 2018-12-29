@@ -26,6 +26,14 @@ namespace Foody.Services.Models.Shared
 
         public const string FoodItemMacroContentErrorMessage = "Macro elements' amount can range from 0 to 100g.";
 
+        public const double MacroElementMinCaloricContent = 0d;
+
+        public const double MacroElementMaxCaloricContent = 9d;
+
+        public const string MacroElementCaloricContentRangeErrorMessage = "The caloric content can range from 0 to 9 kcal per gram.";
+
+        public const string MacroElementCaloricContentMissingErrorMessage = "You must enter a value or leave it zero if the macro element does not provide energy.";
+
         public const int ArticleTitleMinLength = 20;
 
         public const int ArticleTitleMaxLength = 100;

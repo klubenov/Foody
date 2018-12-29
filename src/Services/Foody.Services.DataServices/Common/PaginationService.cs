@@ -24,7 +24,7 @@ namespace Foody.Services.DataServices.Common
             return totalItems / Constants.ArticlesPageCount + 1;
         }
 
-        public TModel GetPageModel<TModel, TItem>(TModel model, int currentPage, Type controllerType, string pageName, Type areaType = null) where TModel : IPaginateable<TItem>
+        public TModel GetPageModel<TModel, TItem>(TModel model, int currentPage, string searchText, Type controllerType, string pageName, Type areaType = null) where TModel : IPaginateable<TItem>
         {
             if (currentPage > model.PaginationModel.TotalPages)
             {
@@ -74,6 +74,7 @@ namespace Foody.Services.DataServices.Common
             }
 
             model.PaginationModel.PageLink = pageLink;
+            model.PaginationModel.SearchText = searchText;
 
             return model;
         }

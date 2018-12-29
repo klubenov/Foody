@@ -30,7 +30,21 @@ namespace Foody.Services.DataServices.Content
             {
                 Name = model.Name,
                 Description = model.Description,
+                
             };
+
+            switch (model.Type)
+            {
+                case "Vitamin":
+                    newMicroElement.IsVitamin = true;
+                    break;
+                case "Mineral":
+                    newMicroElement.IsMineral = true;
+                    break;
+                case "Other":
+                    newMicroElement.IsOther = true;
+                    break;
+            }
 
             this.context.MicroElements.Add(newMicroElement);
             this.context.SaveChanges();
@@ -47,6 +61,107 @@ namespace Foody.Services.DataServices.Content
             }
 
             return newMicroElement;
+        }
+
+        public AllEditMicroElementsViewModel GetAllMicroElementsForEditing(string searchText)
+        {
+            var microElements = this.context.MicroElements.Where(me => me.Name.Contains(searchText ?? string.Empty)).OrderByDescending(me => me.IsVitamin).ThenByDescending(me => me.IsMineral).Select(me => new EditMicroElementListViewModel
+            {
+                Id = me.Id,
+                Name = me.Name,
+                Type = me.IsVitamin ? "Vitamin" : me.IsMineral ? "Mineral" : me.IsOther ? "Other" : "Invalid Type"
+            }).ToList();
+
+            var allMicroElements = new AllEditMicroElementsViewModel
+            {
+                Items = microElements
+            };
+
+            allMicroElements.PaginationModel.TotalPages =
+                this.paginationService.GetTotalPages(allMicroElements.Items.Count);
+
+            return allMicroElements;
+        }
+
+        public EditMicroElementViewModel GetMicroElementForEditing(string microElementId)
+        {
+            var microElement = this.context.MicroElements.Where(me => me.Id == microElementId).Select(me => new EditMicroElementViewModel
+            {
+                Id = me.Id,
+                Name = me.Name,
+                Description = me.Description,
+                ImageLocation = me.ImageLocation,
+                Type = me.IsVitamin ? "Vitamin" : me.IsMineral ? "Mineral" : me.IsOther ? "Other" : "Invalid Type"
+            }).FirstOrDefault();
+
+            return microElement;
+        }
+
+        public MicroElement EditMicroElement(EditMicroElementViewModel model)
+        {
+            var microElement = this.context.MicroElements.FirstOrDefault(me => me.Id == model.Id);
+
+            if (microElement == null)
+            {
+                return null;
+            }
+
+            microElement.Name = model.Name;
+            microElement.Description = model.Description;
+
+            switch (model.Type)
+            {
+                case "Vitamin":
+                    microElement.IsVitamin = true;
+                    microElement.IsMineral = false;
+                    microElement.IsOther = false;
+                    break;
+                case "Mineral":
+                    microElement.IsVitamin = false;
+                    microElement.IsMineral = true;
+                    microElement.IsOther = false;
+                    break;
+                case "Other":
+                    microElement.IsVitamin = false;
+                    microElement.IsMineral = false;
+                    microElement.IsOther = true;
+                    break;
+            }
+
+            if (model.NewImage != null)
+            {
+                string newImageLocation = this.imagesService.RewriteImage(model.NewImage, this.GetType().Name.Replace("Service", string.Empty), model.ImageLocation, model.Id);
+                microElement.ImageLocation = newImageLocation;
+            }
+
+            context.SaveChanges();
+            return microElement;
+        }
+
+        public MacroElement AddMacroElement(AddMacroElementBindingModel model)
+        {
+            var newMacroElement = new MacroElement
+            {
+                Name = model.Name,
+                Description = model.Description,
+                CaloricContentPerGram = model.CaloricContentPerGram
+            };
+
+            this.context.MacroElements.Add(newMacroElement);
+            context.SaveChanges();
+
+            if (model.Image != null)
+            {
+                var macroElementId = this.context.MacroElements.First(mi => mi.Name == model.Name).Id;
+
+                var imageLocation = this.imagesService.CreateImage(model.Image, this.GetType().Name.Replace("Service", string.Empty), macroElementId);
+
+                this.context.MacroElements.First(mi => mi.Id == macroElementId).ImageLocation = imageLocation;
+                newMacroElement.ImageLocation = imageLocation;
+                context.SaveChanges();
+            }
+
+            return newMacroElement;
         }
 
         public IEnumerable<string> GetMicroElementsNames()

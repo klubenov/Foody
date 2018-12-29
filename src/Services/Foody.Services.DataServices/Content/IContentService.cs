@@ -10,6 +10,14 @@ namespace Foody.Services.DataServices.Content
     {
         MicroElement AddMicroElement(AddMicroElementBindingModel addMicroElementBindingModel);
 
+        AllEditMicroElementsViewModel GetAllMicroElementsForEditing(string searchText);
+
+        EditMicroElementViewModel GetMicroElementForEditing(string microElementId);
+
+        MicroElement EditMicroElement(EditMicroElementViewModel model);
+
+        MacroElement AddMacroElement(AddMacroElementBindingModel addMacroElementBindingModel);
+
         IEnumerable<string> GetMicroElementsNames();
 
         IEnumerable<string> GetMacroElementsNames();

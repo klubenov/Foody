@@ -1,12 +1,12 @@
-﻿@model Foody.Services.Models.Content.AddMicroElementBindingModel
+﻿@model Foody.Services.Models.Content.AddMacroElementBindingModel
 @{
-    ViewData["Title"] = "Add Micro Element";
+    ViewData["Title"] = "Add Macro Element";
 }
 
-<h2 class="text-center">Add Micro Element</h2>
+<h2 class="text-center">Add Macro Element</h2>
 
 <div class="col-md-offset-1 col-md-10">
-    <form method="post" asp-action="Add_Micro_Element" asp-controller="Content" asp-area="Administration" enctype="multipart/form-data">
+    <form method="post" asp-action="Add_Macro_Element" asp-controller="Content" asp-area="Administration" enctype="multipart/form-data">
         <hr class="hr-2" />
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="row">
@@ -23,17 +23,13 @@
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
         <hr class="hr-2" />
-        <h4 class="text-center">Please select type:</h4>
-        <div class="form-group text-center">
-            <input asp-for="Type" type="radio" id="vitamin" value="Vitamin">
-            <label for="vitamin">Vitamin</label>
-
-            <input asp-for="Type" type="radio" id="mineral" value="Mineral">
-            <label for="mineral">Mineral</label>
-
-            <input asp-for="Type" type="radio" id="other" value="Other">
-            <label for="other">Other</label>
-            <span asp-validation-for="Type" class="text-danger"></span>
+        <h4 class="text-center">Enter the caloric content, leave it zero if the element contains no calories..</h4>
+        <div class="row">
+            <div class="col-md-offset-5 col-md-2 form-group text-center">
+                <label asp-for="CaloricContentPerGram" class="text-center"></label>
+                <input type="text" asp-for="CaloricContentPerGram" class="form-control" value="0">
+                <span asp-validation-for="CaloricContentPerGram" class="text-danger"></span>
+            </div>
         </div>
         <hr class="hr-2" />
         <div class="row">

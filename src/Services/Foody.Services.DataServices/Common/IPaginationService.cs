@@ -9,7 +9,7 @@ namespace Foody.Services.DataServices.Common
     {
         int GetTotalPages(int totalItems);
 
-        TModel GetPageModel<TModel,TItem>(TModel model, int currentPage, Type controllerType, string pageName, Type areaType)
+        TModel GetPageModel<TModel,TItem>(TModel model, int currentPage, string searchText, Type controllerType, string pageName, Type areaType)
             where TModel : IPaginateable<TItem>;
     }
 }

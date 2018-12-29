@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Http;
 
 namespace Foody.Services.Models.Content
 {
-    public class AddMicroElementBindingModel
+    public class EditMicroElementViewModel
     {
+        public string Id { get; set; }
+
         [Required]
         [StringLength(Constants.NutritionItemNameMaxLength, MinimumLength = Constants.NutritionItemNameMinLength, ErrorMessage = Constants.NutritionItemNameLengthErrorMessage)]
         public string Name { get; set; }
@@ -20,6 +22,12 @@ namespace Foody.Services.Models.Content
         [RegularExpression("^Vitamin$|^Mineral$|^Other$", ErrorMessage = "Invalid type.")]
         public string Type { get; set; }
 
-        public IFormFile Image { get; set; }
+        public IFormFile NewImage { get; set; }
+
+        public string ImageLocation { get; set; }
+
+        public string CurrentPage { get; set; }
+
+        public string SearchText { get; set; }
     }
 }

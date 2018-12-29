@@ -43,6 +43,88 @@ namespace Foody.Web.Areas.Administration.Controllers
             return PartialView("Add_Micro_Element");
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin,Super-admin")]
+        public IActionResult Edit_Micro_Elements(int currentPage = 1, string searchText = null, string initialOpen = InitialOpenCheckString)
+        {
+            var model = this.contentService.GetAllMicroElementsForEditing(searchText);
+
+            model.SearchText = searchText;
+
+            model = this.paginationService.GetPageModel<AllEditMicroElementsViewModel, EditMicroElementListViewModel>(model,
+                currentPage, searchText, this.GetType(), "Edit_Micro_Elements", typeof(AreaAttribute));
+
+            if (initialOpen == InitialOpenCheckString)
+            {
+                return PartialView("Edit_Micro_Elements", model);
+            }
+            else if (initialOpen == "false")
+            {
+                var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "Edit_Micro_Elements", model);
+                return View("ContentMenu", reloadModel);
+            }
+
+            return RedirectToAction("ContentMenu");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Super-admin")]
+        [ValidateAntiForgeryToken]
+        public IActionResult OpenMicroElementForEditing(string microElementId, string currentPage, string searchText)
+        {
+            var microElement = this.contentService.GetMicroElementForEditing(microElementId);
+
+            if (microElement == null)
+            {
+                return RedirectToAction("ContentMenu");
+            }
+
+            microElement.CurrentPage = currentPage;
+            microElement.SearchText = searchText;
+
+            var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "OpenMicroElementForEditing", microElement);
+
+            return View("ContentMenu", reloadModel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Super-admin")]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditMicroElement(EditMicroElementViewModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                this.contentService.EditMicroElement(model);
+                return RedirectToAction("Edit_Micro_Elements",
+                    new { currentPage = model.CurrentPage, searchText = model.SearchText, initialOpen = "false" });
+            }
+
+            var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "OpenMicroElementForEditing", model);
+            return View("ContentMenu", reloadModel);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,Super-admin")]
+        public IActionResult Add_Macro_Element()
+        {
+            return PartialView("Add_Macro_Element");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Super-admin")]
+        [ValidateAntiForgeryToken]
+        public IActionResult Add_Macro_Element(AddMacroElementBindingModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                this.contentService.AddMacroElement(model);
+                return RedirectToAction("ContentMenu");
+            }
+
+            var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "Add_Macro_Element", model);
+            return View("ContentMenu", reloadModel);
+        }
+
         [HttpPost]
         [Authorize(Roles = "Admin,Super-admin")]
         [ValidateAntiForgeryToken]
@@ -94,7 +176,7 @@ namespace Foody.Web.Areas.Administration.Controllers
             model.SearchText = searchText;
 
             model = this.paginationService.GetPageModel<AllEditFoodItemsViewModel, EditFoodItemListViewModel>(model,
-                currentPage, this.GetType(), "Edit_Food_Items", typeof(AreaAttribute));
+                currentPage, searchText, this.GetType(), "Edit_Food_Items", typeof(AreaAttribute));
 
             if (initialOpen == InitialOpenCheckString)
             {
@@ -109,6 +191,9 @@ namespace Foody.Web.Areas.Administration.Controllers
             return RedirectToAction("ContentMenu");
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Admin,Super-admin")]
+        [ValidateAntiForgeryToken]
         public IActionResult OpenFoodItemForEditing(string foodItemId, string currentPage, string searchText)
         {
             var foodItem = this.contentService.GetFoodItemForEditing(foodItemId);

@@ -11,7 +11,7 @@
         else
         {
             <li class="page-item">
-                <a class="page-link" href="@Model.PageLink?currentPage=@(Model.CurrentPage-1)&initialOpen=false">Previous</a>
+                <a class="page-link" href="@Model.PageLink?currentPage=@(Model.CurrentPage-1)&searchText=@Model.SearchText&initialOpen=false">Previous</a>
             </li>
         }
         @for (int i = 1; i <= Model.TotalPages; i++)
@@ -19,12 +19,12 @@
             if (i == Model.CurrentPage)
             {
                 <li class="page-item active">
-                    <a class="page-link" href="@Model.PageLink?currentPage=@i&initialOpen=false">@i <span class="sr-only">(current)</span></a>
+                    <a class="page-link" href="@Model.PageLink?currentPage=@i&searchText=@Model.SearchText&initialOpen=false">@i <span class="sr-only">(current)</span></a>
                 </li>
             }
             else
             {
-                <li class="page-item"><a class="page-link" href="@Model.PageLink?currentPage=@i&initialOpen=false">@i</a></li>
+                <li class="page-item"><a class="page-link" href="@Model.PageLink?currentPage=@i&searchText=@Model.SearchText&initialOpen=false">@i</a></li>
             }
         }
         @if (Model.CurrentPage == Model.TotalPages)
@@ -36,7 +36,7 @@
         else
         {
             <li class="page-item">
-                <a class="page-link" href="@Model.PageLink?currentPage=@(Model.CurrentPage+1)&initialOpen=false">Next</a>
+                <a class="page-link" href="@Model.PageLink?currentPage=@(Model.CurrentPage+1)&searchText=@Model.SearchText&initialOpen=false">Next</a>
             </li>
         }
     </ul>

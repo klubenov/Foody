@@ -68,13 +68,13 @@ namespace Foody.Web.Areas.Administration.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Super-admin")]
-        public IActionResult Articles_Awaiting_Approval(int currentPage = 1, string initialOpen = InitialOpenCheckString, string errorMessage = null)
+        public IActionResult Articles_Awaiting_Approval(int currentPage = 1, string searchText = null, string initialOpen = InitialOpenCheckString, string errorMessage = null)
         {
             // TODO: Optimize pagination content gathering
             var model = this.articlesService.GetAllArticlesForApproval();
 
             model = this.paginationService.GetPageModel<AllArticlesForApprovalViewModel, ArticleForApprovalListViewModel>(
-                    model, currentPage, this.GetType(), "Articles_Awaiting_Approval", typeof(AreaAttribute));
+                    model, currentPage, searchText, this.GetType(), "Articles_Awaiting_Approval", typeof(AreaAttribute));
 
             if (initialOpen == InitialOpenCheckString)
             {
@@ -145,12 +145,12 @@ namespace Foody.Web.Areas.Administration.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Super-admin")]
-        public IActionResult My_Articles(int currentPage = 1, string initialOpen = InitialOpenCheckString)
+        public IActionResult My_Articles(int currentPage = 1, string searchText = null, string initialOpen = InitialOpenCheckString)
         {
             var model = this.articlesService.GetAllApprovedArticlesByUsername(this.User.Identity.Name);
 
             model = this.paginationService.GetPageModel<AllMyApprovedArticlesViewModel, MyApprovedArticlesListViewModel>(
-                    model, currentPage, this.GetType(), "My_Articles", typeof(AreaAttribute));
+                    model, currentPage, searchText, this.GetType(), "My_Articles", typeof(AreaAttribute));
 
             if (initialOpen == InitialOpenCheckString)
             {
@@ -167,12 +167,12 @@ namespace Foody.Web.Areas.Administration.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public IActionResult My_Approved_Articles(int currentPage = 1, string initialOpen = InitialOpenCheckString)
+        public IActionResult My_Approved_Articles(int currentPage = 1, string searchText = null, string initialOpen = InitialOpenCheckString)
         {
             var model = this.articlesService.GetAllApprovedArticlesByUsername(this.User.Identity.Name);
 
             model = this.paginationService.GetPageModel<AllMyApprovedArticlesViewModel, MyApprovedArticlesListViewModel>(
-                model, currentPage, this.GetType(), "My_Approved_Articles", typeof(AreaAttribute));
+                model, currentPage, searchText, this.GetType(), "My_Approved_Articles", typeof(AreaAttribute));
 
             if (initialOpen == InitialOpenCheckString)
             {
@@ -209,12 +209,12 @@ namespace Foody.Web.Areas.Administration.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public IActionResult My_Rejected_Articles(int currentPage = 1, string initialOpen = InitialOpenCheckString)
+        public IActionResult My_Rejected_Articles(int currentPage = 1, string searchText = null, string initialOpen = InitialOpenCheckString)
         {
             var model = this.articlesService.GetAllRejectedArticlesByUsername(this.User.Identity.Name);
 
             model = this.paginationService.GetPageModel<AllMyRejectedArticlesViewModel, MyRejectedArticlesListViewModel>(
-                    model, currentPage, this.GetType(), "My_Rejected_Articles", typeof(AreaAttribute));
+                    model, currentPage, searchText, this.GetType(), "My_Rejected_Articles", typeof(AreaAttribute));
 
             if (initialOpen == InitialOpenCheckString)
             {
