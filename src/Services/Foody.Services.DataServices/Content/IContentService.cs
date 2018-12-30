@@ -22,6 +22,8 @@ namespace Foody.Services.DataServices.Content
 
         IEnumerable<string> GetMacroElementsNames();
 
+        IEnumerable<string> GetFoodItemsNames();
+
         FoodItem AddFoodItem(AddFoodItemBindingModel model);
 
         AllEditFoodItemsViewModel GetAllEditFoodItemsForEditing(string searchText);

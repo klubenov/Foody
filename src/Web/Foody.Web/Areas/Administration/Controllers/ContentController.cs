@@ -6,6 +6,7 @@ using Foody.Services.DataServices.Common;
 using Foody.Services.DataServices.Content;
 using Foody.Services.DataServices.Menu;
 using Foody.Services.Models.Content;
+using Foody.Services.Models.Menu;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -224,6 +225,51 @@ namespace Foody.Web.Areas.Administration.Controllers
             }
 
             var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "OpenFoodItemForEditing", model);
+            return View("ContentMenu", reloadModel);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,Super-admin")]
+        public IActionResult Add_Recipe()
+        {
+            var foodItems = this.contentService.GetFoodItemsNames();
+
+            this.ViewData["FoodItemsNames"] = foodItems.ToList();
+
+            return PartialView("Add_Recipe");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Super-admin")]
+        [ValidateAntiForgeryToken]
+        public IActionResult Add_Recipe(AddRecipeBindingModel model)
+        {
+            var foodItems = this.contentService.GetFoodItemsNames();
+
+            this.ViewData["FoodItemsNames"] = foodItems.ToList();
+
+            if (this.ModelState.IsValid)
+            {
+                if (model.AddFieldsCount != 0)
+                {
+                    for (int i = 0; i < model.AddFieldsCount; i++)
+                    {
+                        var newField = new AddRecipeBindingModel.FoodItemInRecipeBindingModel();
+                        model.FoodItems.Add(newField);
+                    }
+
+                    model.AddFieldsCount = 0;
+
+                    var reloadModeWithNewFields = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "Add_Recipe", model);
+                    return View("ContentMenu", reloadModeWithNewFields);
+                }
+
+                //this.contentService.AddMacroElement(model);
+                //return RedirectToAction("ContentMenu");
+                return null;
+            }
+
+            var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "Add_Recipe", model);
             return View("ContentMenu", reloadModel);
         }
     }
