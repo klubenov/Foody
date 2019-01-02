@@ -1,0 +1,58 @@
+﻿@model Foody.Services.Models.Content.EditMacroElementViewModel
+@{
+    ViewData["Title"] = "Edit Macro Element";
+}
+
+<h2 class="text-center">Edit Macro Element</h2>
+
+<div class="col-md-offset-1 col-md-10">
+    <form method="post" asp-action="EditMacroElement" asp-controller="Content" asp-area="Administration" autocomplete="off" enctype="multipart/form-data">
+        <hr class="hr-2" />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-offset-4 col-md-4 form-group text-center">
+                <label asp-for="Name" class="text-center"></label>
+                <input asp-for="Name" class="form-control" placeholder="Choose name..." />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        <hr class="hr-2" />
+        <div class="form-group text-center">
+            <label asp-for="Description" class="text-center"></label>
+            <textarea asp-for="Description" class="form-control" rows="10" placeholder="Description..."></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <hr class="hr-2" />
+        <img src="/Images/Get/location?location=@Model.ImageLocation" class="img-responsive center-block" alt="image not available">
+        <input type="hidden" asp-for="ImageLocation" value="@Model.ImageLocation" class="form-control" />
+        <hr class="hr-2" />
+        <div class="row">
+            <div class="col-md-offset-4 col-md-4 form-group text-center">
+                <label asp-for="NewImage" class="text-center">Choose new image (optional)...</label>
+                <input type="file" asp-for="NewImage" class="form-control" />
+            </div>
+        </div>
+        <input type="hidden" asp-for="Id" value="@Model.Id" class="form-control" />
+        <input type="hidden" asp-for="CurrentPage" value="@Model.CurrentPage" class="form-control" />
+        <input type="hidden" asp-for="SearchText" value="@Model.SearchText" class="form-control" />
+        <hr class="hr-2" />
+        <h4 class="text-center">Enter the caloric content, leave it zero if the element contains no calories..</h4>
+        <div class="row">
+            <div class="col-md-offset-5 col-md-2 form-group text-center">
+                <label asp-for="CaloricContentPerGram" class="text-center"></label>
+                <input type="text" asp-for="CaloricContentPerGram" class="form-control">
+                <span asp-validation-for="CaloricContentPerGram" class="text-danger"></span>
+            </div>
+        </div>
+        <hr class="hr-2" />
+
+        <div class="row form-group">
+            <div class="col-md-offset-2 col-md-3">
+                <button type="submit" class="btn btn-success form-control">Edit</button>
+            </div>
+            <div class="col-md-offset-2 col-md-3">
+                <a href="/Administration/Content/Edit_Macro_Elements?currentPage=@(Model.CurrentPage)&initialOpen=false&searchText=@Model.SearchText" class="btn btn-danger form-control" role="button">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

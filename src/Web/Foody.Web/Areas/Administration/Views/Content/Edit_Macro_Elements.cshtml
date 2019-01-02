@@ -1,0 +1,50 @@
+﻿@model Foody.Services.Models.Content.AllEditMacroElementsViewModel
+@{
+    ViewData["Title"] = "Edit Macro Elements";
+}
+
+<h2 class="text-center">Edit Macro Elements</h2>
+<hr class="hr-2" />
+<form asp-action="Edit_Macro_Elements" asp-controller="Content" asp-area="Administration" method="get">
+    <div class="row text-center">
+        <div class="col-md-offset-3 col-md-4">
+            <input class="form-control" name="searchText" type="text" placeholder="Enter desired name..." value="@(string.IsNullOrEmpty(Model.SearchText) ? string.Empty : Model.SearchText)" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-info form-control">Search</button>
+        </div>
+        <input name="currentPage" type="hidden" value="1" />
+        <input name="initialOpen" type="hidden" value="false" />
+    </div>
+</form>
+<hr class="hr-2" />
+<table class="table">
+    <thead class="">
+        <tr class="row ">
+            <th class="col-6 border-top-0">Name</th>
+            <th class="col-3 border-top-0">Caloric Content</th>
+            <th class="col-3 border-top-0">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var macroElement in Model.Items)
+        {
+            <tr class="row">
+                <th class="col-6 font-weight-normal">@macroElement.Name</th>
+                <th class="col-3 font-weight-normal">@macroElement.CaloricContentPerGram</th>
+                <th class="col-3 font-weight-normal">
+                    <form asp-action="OpenMacroElementForEditing" asp-controller="Content" asp-area="Administration" method="post">
+                        <div class="justify-content-center">
+                            <input name="macroElementId" type="hidden" value="@macroElement.Id" />
+                            <input name="currentPage" type="hidden" value="@Model.PaginationModel.CurrentPage" />
+                            <input name="searchText" type="hidden" value="@(string.IsNullOrEmpty(Model.SearchText) ? string.Empty : Model.SearchText)" />
+                            <button type="submit" class="btn btn-success">Edit</button>
+                        </div>
+                    </form>
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+<partial name="_PaginationPartial" model="Model.PaginationModel" />
+<hr class="hr-2" />

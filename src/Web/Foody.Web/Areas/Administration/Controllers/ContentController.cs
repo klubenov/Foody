@@ -44,6 +44,21 @@ namespace Foody.Web.Areas.Administration.Controllers
             return PartialView("Add_Micro_Element");
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Admin,Super-admin")]
+        [ValidateAntiForgeryToken]
+        public IActionResult Add_Micro_Element(AddMicroElementBindingModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                this.contentService.AddMicroElement(model);
+                return RedirectToAction("ContentMenu");
+            }
+
+            var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "Add_Micro_Element", model);
+            return View("ContentMenu", reloadModel);
+        }
+
         [HttpGet]
         [Authorize(Roles = "Admin,Super-admin")]
         public IActionResult Edit_Micro_Elements(int currentPage = 1, string searchText = null, string initialOpen = InitialOpenCheckString)
@@ -126,18 +141,63 @@ namespace Foody.Web.Areas.Administration.Controllers
             return View("ContentMenu", reloadModel);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin,Super-admin")]
+        public IActionResult Edit_Macro_Elements(int currentPage = 1, string searchText = null, string initialOpen = InitialOpenCheckString)
+        {
+            var model = this.contentService.GetAllMacroElementsForEditing(searchText);
+
+            model.SearchText = searchText;
+
+            model = this.paginationService.GetPageModel<AllEditMacroElementsViewModel, EditMacroElementListViewModel>(model,
+                currentPage, searchText, this.GetType(), "Edit_Macro_Elements", typeof(AreaAttribute));
+
+            if (initialOpen == InitialOpenCheckString)
+            {
+                return PartialView("Edit_Macro_Elements", model);
+            }
+            else if (initialOpen == "false")
+            {
+                var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "Edit_Macro_Elements", model);
+                return View("ContentMenu", reloadModel);
+            }
+
+            return RedirectToAction("ContentMenu");
+        }
+
         [HttpPost]
         [Authorize(Roles = "Admin,Super-admin")]
         [ValidateAntiForgeryToken]
-        public IActionResult Add_Micro_Element(AddMicroElementBindingModel model)
+        public IActionResult OpenMacroElementForEditing(string macroElementId, string currentPage, string searchText)
         {
-            if (this.ModelState.IsValid)
+            var macroElement = this.contentService.GetMacroElementForEditing(macroElementId);
+
+            if (macroElement == null)
             {
-                this.contentService.AddMicroElement(model);
                 return RedirectToAction("ContentMenu");
             }
 
-            var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "Add_Micro_Element", model);
+            macroElement.CurrentPage = currentPage;
+            macroElement.SearchText = searchText;
+
+            var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "OpenMacroElementForEditing", macroElement);
+
+            return View("ContentMenu", reloadModel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Super-admin")]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditMacroElement(EditMacroElementViewModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                this.contentService.EditMacroElement(model);
+                return RedirectToAction("Edit_Macro_Elements",
+                    new { currentPage = model.CurrentPage, searchText = model.SearchText, initialOpen = "false" });
+            }
+
+            var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "OpenMacroElementForEditing", model);
             return View("ContentMenu", reloadModel);
         }
 
@@ -264,12 +324,93 @@ namespace Foody.Web.Areas.Administration.Controllers
                     return View("ContentMenu", reloadModeWithNewFields);
                 }
 
-                //this.contentService.AddMacroElement(model);
-                //return RedirectToAction("ContentMenu");
-                return null;
+                this.contentService.AddRecipe(model);
+                return RedirectToAction("ContentMenu");
             }
 
             var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "Add_Recipe", model);
+            return View("ContentMenu", reloadModel);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,Super-admin")]
+        public IActionResult Edit_Recipes(int currentPage = 1, string searchText = null, string initialOpen = InitialOpenCheckString)
+        {
+            var model = this.contentService.GetAllRecipesForEditing(searchText);
+
+            model.SearchText = searchText;
+
+            model = this.paginationService.GetPageModel<AllEditRecipesViewModel, EditRecipeListViewModel>(model,
+                currentPage, searchText, this.GetType(), "Edit_Recipes", typeof(AreaAttribute));
+
+            if (initialOpen == InitialOpenCheckString)
+            {
+                return PartialView("Edit_Recipes", model);
+            }
+            else if (initialOpen == "false")
+            {
+                var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "Edit_Recipes", model);
+                return View("ContentMenu", reloadModel);
+            }
+
+            return RedirectToAction("ContentMenu");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Super-admin")]
+        [ValidateAntiForgeryToken]
+        public IActionResult OpenRecipeForEditing(string recipeId, string currentPage, string searchText)
+        {
+            var foodItems = this.contentService.GetFoodItemsNames();
+
+            this.ViewData["FoodItemsNames"] = foodItems.ToList();
+
+            var recipe = this.contentService.GetRecipeForEditing(recipeId);
+
+            if (recipe == null)
+            {
+                return RedirectToAction("ContentMenu");
+            }
+
+            recipe.CurrentPage = currentPage;
+            recipe.SearchText = searchText;
+
+            var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "OpenRecipeForEditing", recipe);
+
+            return View("ContentMenu", reloadModel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Super-admin")]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditRecipe(EditRecipeViewModel model)
+        {
+            var foodItems = this.contentService.GetFoodItemsNames();
+
+            this.ViewData["FoodItemsNames"] = foodItems.ToList();
+
+            if (this.ModelState.IsValid)
+            {
+                if (model.AddFieldsCount != 0)
+                {
+                    for (int i = 0; i < model.AddFieldsCount; i++)
+                    {
+                        var newField = new EditRecipeViewModel.FoodItemInRecipeViewModel();
+                        model.FoodItems.Add(newField);
+                    }
+
+                    model.AddFieldsCount = 0;
+
+                    var reloadModeWithNewFields = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "OpenRecipeForEditing", model);
+                    return View("ContentMenu", reloadModeWithNewFields);
+                }
+
+                this.contentService.EditRecipe(model);
+                return RedirectToAction("Edit_Recipes",
+                    new { currentPage = model.CurrentPage, searchText = model.SearchText, initialOpen = "false" });
+            }
+
+            var reloadModel = this.menuService.GetMenuItems(this.GetType(), typeof(HttpGetAttribute), typeof(AuthorizeAttribute), AreaName, "OpenRecipeForEditing", model);
             return View("ContentMenu", reloadModel);
         }
     }

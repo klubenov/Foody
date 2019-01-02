@@ -18,6 +18,12 @@ namespace Foody.Services.DataServices.Content
 
         MacroElement AddMacroElement(AddMacroElementBindingModel addMacroElementBindingModel);
 
+        AllEditMacroElementsViewModel GetAllMacroElementsForEditing(string searchText);
+
+        EditMacroElementViewModel GetMacroElementForEditing(string macroElementId);
+
+        MacroElement EditMacroElement(EditMacroElementViewModel model);
+
         IEnumerable<string> GetMicroElementsNames();
 
         IEnumerable<string> GetMacroElementsNames();
@@ -31,5 +37,13 @@ namespace Foody.Services.DataServices.Content
         EditFoodItemViewModel GetFoodItemForEditing(string foodItemId);
 
         FoodItem EditFoodItem(EditFoodItemViewModel model);
+
+        Recipe AddRecipe(AddRecipeBindingModel model);
+
+        AllEditRecipesViewModel GetAllRecipesForEditing(string searchText);
+
+        EditRecipeViewModel GetRecipeForEditing(string recipeId);
+
+        Recipe EditRecipe(EditRecipeViewModel model);
     }
 }

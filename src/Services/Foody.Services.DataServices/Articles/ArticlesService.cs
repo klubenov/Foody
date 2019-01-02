@@ -240,7 +240,7 @@ namespace Foody.Services.DataServices.Articles
 
             if (model.NewImage != null)
             {
-                string newImageLocation = this.imagesService.RewriteImage(model.NewImage, this.GetType().Name.Replace("Service", string.Empty), model.ImageLocation, model.Id);
+                string newImageLocation = this.imagesService.RecreateImage(model.NewImage, this.GetType().Name.Replace("Service", string.Empty), model.ImageLocation, model.Id);
                 article.ImageLocation = newImageLocation;
             }
 

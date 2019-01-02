@@ -29,7 +29,7 @@ namespace Foody.Services.DataServices.Images
             return fileLocation;
         }
 
-        public string RewriteImage(IFormFile formFile, string folder, string imageLocation, string id)
+        public string RecreateImage(IFormFile formFile, string folder, string imageLocation, string id)
         {
             if (string.IsNullOrEmpty(imageLocation))
             {

@@ -130,7 +130,7 @@ namespace Foody.Services.DataServices.Content
 
             if (model.NewImage != null)
             {
-                string newImageLocation = this.imagesService.RewriteImage(model.NewImage, this.GetType().Name.Replace("Service", string.Empty), model.ImageLocation, model.Id);
+                string newImageLocation = this.imagesService.RecreateImage(model.NewImage, this.GetType().Name.Replace("Service", string.Empty), model.ImageLocation, model.Id);
                 microElement.ImageLocation = newImageLocation;
             }
 
@@ -162,6 +162,64 @@ namespace Foody.Services.DataServices.Content
             }
 
             return newMacroElement;
+        }
+
+        public AllEditMacroElementsViewModel GetAllMacroElementsForEditing(string searchText)
+        {
+            var macroElements = this.context.MacroElements.Where(me => me.Name.Contains(searchText ?? string.Empty))
+                .Select(me => new EditMacroElementListViewModel
+                {
+                    Id = me.Id,
+                    Name = me.Name,
+                    CaloricContentPerGram = me.CaloricContentPerGram
+                }).ToList();
+
+            var allMacroElements = new AllEditMacroElementsViewModel
+            {
+                Items = macroElements
+            };
+
+            allMacroElements.PaginationModel.TotalPages =
+                this.paginationService.GetTotalPages(allMacroElements.Items.Count);
+
+            return allMacroElements;
+        }
+
+        public EditMacroElementViewModel GetMacroElementForEditing(string macroElementId)
+        {
+            var macroElement = this.context.MacroElements.Where(me => me.Id == macroElementId).Select(me => new EditMacroElementViewModel
+            {
+                Id = me.Id,
+                Name = me.Name,
+                Description = me.Description,
+                CaloricContentPerGram = me.CaloricContentPerGram,
+                ImageLocation = me.ImageLocation
+            }).FirstOrDefault();
+
+            return macroElement;
+        }
+
+        public MacroElement EditMacroElement(EditMacroElementViewModel model)
+        {
+            var macroElement = this.context.MacroElements.FirstOrDefault(me => me.Id == model.Id);
+
+            if (macroElement == null)
+            {
+                return null;
+            }
+
+            macroElement.Name = model.Name;
+            macroElement.Description = model.Description;
+            macroElement.CaloricContentPerGram = model.CaloricContentPerGram;
+
+            if (model.NewImage != null)
+            {
+                string newImageLocation = this.imagesService.RecreateImage(model.NewImage, this.GetType().Name.Replace("Service", string.Empty), model.ImageLocation, model.Id);
+                macroElement.ImageLocation = newImageLocation;
+            }
+
+            context.SaveChanges();
+            return macroElement;
         }
 
         public IEnumerable<string> GetMicroElementsNames()
@@ -252,7 +310,7 @@ namespace Foody.Services.DataServices.Content
                                                     mr.Recipe.RecipeFoodItems.Select(
                                                         rfi => rfi.FoodItem.Name == fi.Name))).Count()
                                         + this.context.Meals.Include(m => m.MealFoodItems).Count()
-                }).OrderBy(fi => fi.UsageInMealsCount + fi.UsageInRecipesCount).ToList();
+                }).OrderByDescending(fi => fi.UsageInMealsCount + fi.UsageInRecipesCount).ToList();
 
             var allFoodItems = new AllEditFoodItemsViewModel
             {
@@ -384,12 +442,145 @@ namespace Foody.Services.DataServices.Content
 
             if (model.NewImage != null)
             {
-                string newImageLocation = this.imagesService.RewriteImage(model.NewImage, this.GetType().Name.Replace("Service", string.Empty), model.ImageLocation, model.Id);
+                string newImageLocation = this.imagesService.RecreateImage(model.NewImage, this.GetType().Name.Replace("Service", string.Empty), model.ImageLocation, model.Id);
                 foodItem.ImageLocation = newImageLocation;
             }
 
             context.SaveChanges();
             return foodItem;
+        }
+
+        public Recipe AddRecipe(AddRecipeBindingModel model)
+        {
+            var recipe = new Recipe
+            {
+                Name = model.Name,
+                Description = model.Description
+            };
+
+            var recipeFoodItems = model.FoodItems.Select(fi => new RecipeFoodItem
+            {
+                Recipe = recipe,
+                FoodItem = this.context.FoodItems.FirstOrDefault(fidb => fidb.Name == fi.Name),
+                AmountInGrams = fi.AmountInGrams
+            }).ToList();
+
+            recipe.RecipeFoodItems = recipeFoodItems;
+            this.context.Recipes.Add(recipe);
+            this.context.SaveChanges();
+
+            if (model.Image != null)
+            {
+                var recipeId = this.context.Recipes.First(r => r.Name == model.Name).Id;
+
+                var imageLocation = this.imagesService.CreateImage(model.Image, this.GetType().Name.Replace("Service", string.Empty), recipeId);
+
+                this.context.Recipes.First(r => r.Id == recipeId).ImageLocation = imageLocation;
+                recipe.ImageLocation = imageLocation;
+                context.SaveChanges();
+            }
+
+            return recipe;
+        }
+
+        public AllEditRecipesViewModel GetAllRecipesForEditing(string searchText)
+        {
+            var recipes = this.context.Recipes.Include(r => r.RecipeFoodItems).ThenInclude(rfi => rfi.FoodItem)
+                .ThenInclude(fi => fi.FoodItemMacroElements).ThenInclude(fime => fime.MacroElement)
+                .Where(r => r.Name.Contains(searchText ?? string.Empty))
+                .Select(r => new EditRecipeListViewModel
+                {
+                    Id = r.Id,
+                    Name = r.Name,
+                    CaloriesPer100grams = r.RecipeFoodItems.SelectMany(rfi =>
+                            rfi.FoodItem.FoodItemMacroElements.Select(fime =>
+                                fime.MacroElement.CaloricContentPerGram * fime.AmountInGrams *
+                                (rfi.AmountInGrams / 100))).Sum() / (r.RecipeFoodItems.Select(rfi => rfi.AmountInGrams).Sum() / 100),
+                    IngredientsCount = r.RecipeFoodItems.Count
+                }).ToList();
+
+            var allRecipes = new AllEditRecipesViewModel
+            {
+                Items = recipes
+            };
+
+            allRecipes.PaginationModel.TotalPages = this.paginationService.GetTotalPages(allRecipes.Items.Count);
+
+            return allRecipes;
+        }
+
+        public EditRecipeViewModel GetRecipeForEditing(string recipeId)
+        {
+            var recipe = this.context.Recipes.Include(r => r.RecipeFoodItems).ThenInclude(rfi => rfi.FoodItem).Where(r => r.Id == recipeId)
+                .Select(r => new EditRecipeViewModel
+                {
+                    Id = r.Id,
+                    Name = r.Name,
+                    Description = r.Description,
+                    ImageLocation = r.ImageLocation,
+                    FoodItems = r.RecipeFoodItems.Select(rfi => new EditRecipeViewModel.FoodItemInRecipeViewModel
+                    {
+                        Name = rfi.FoodItem.Name,
+                        AmountInGrams = rfi.AmountInGrams
+                    }).ToList()
+                }).FirstOrDefault();
+
+            return recipe;
+        }
+
+        public Recipe EditRecipe(EditRecipeViewModel model)
+        {
+            var recipe = this.context.Recipes.Include(r => r.RecipeFoodItems).ThenInclude(rfi => rfi.FoodItem).FirstOrDefault(r => r.Id == model.Id);
+
+            if (recipe == null)
+            {
+                return null;
+            }
+
+            foreach (var foodItem in model.FoodItems)
+            {
+                var recipeFoodItem = recipe.RecipeFoodItems.FirstOrDefault(rfi => rfi.FoodItem.Name == foodItem.Name);
+
+                if (recipeFoodItem != null)
+                {
+                    if (foodItem.AmountInGrams > 0)
+                    {
+                        recipeFoodItem.AmountInGrams = foodItem.AmountInGrams;
+                    }
+                    else
+                    {
+                        this.context.RecipeFoodItems.Remove(recipeFoodItem);
+                    }
+                }
+                else
+                {
+                    if (foodItem.AmountInGrams > 0)
+                    {
+                        var newRecipeFoodItem = new RecipeFoodItem
+                        {
+                            Recipe = recipe,
+                            FoodItem = this.context.FoodItems.First(fi => fi.Name == foodItem.Name),
+                            AmountInGrams = foodItem.AmountInGrams
+                        };
+                        if (newRecipeFoodItem.FoodItem != null)
+                        {
+                            recipe.RecipeFoodItems.Add(newRecipeFoodItem);
+                        }
+                    }
+                }
+            }
+
+            recipe.Name = model.Name;
+            recipe.Description = model.Description;
+
+            if (model.NewImage != null)
+            {
+                string newImageLocation = this.imagesService.RecreateImage(model.NewImage, this.GetType().Name.Replace("Service", string.Empty), model.ImageLocation, model.Id);
+                recipe.ImageLocation = newImageLocation;
+            }
+
+            context.SaveChanges();
+            return recipe;
         }
     }
 }

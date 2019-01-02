@@ -6,6 +6,6 @@ namespace Foody.Services.DataServices.Common
 {
     public static class Constants
     {
-        public const int ArticlesPageCount = 3;
+        public const int ArticlesPageCount = 10;
     }
 }

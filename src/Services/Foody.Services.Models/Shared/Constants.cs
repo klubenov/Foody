@@ -20,9 +20,9 @@ namespace Foody.Services.Models.Shared
 
         public const string NutritionItemDescriptionLengthErrorMessage = "The description is too long or too short, it should be between 20 and 1000 characters.";
 
-        public const double FoodItemMicroMaxContent = 20000d;
+        public const double FoodItemMicroMaxContent = 40000d;
 
-        public const string FoodItemMicroContentErrorMessage = "Micro elements' amount can range from 0 to 20000mg.";
+        public const string FoodItemMicroContentErrorMessage = "Micro elements' amount can range from 0 to 40000mg.";
 
         public const string FoodItemMacroContentErrorMessage = "Macro elements' amount can range from 0 to 100g.";
 

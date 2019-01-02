@@ -9,6 +9,6 @@ namespace Foody.Services.DataServices.Images
     {
         string CreateImage(IFormFile formFile, string folder, string id);
 
-        string RewriteImage(IFormFile modelNewImage, string folder, string imageLocation, string id);
+        string RecreateImage(IFormFile modelNewImage, string folder, string imageLocation, string id);
     }
 }
