@@ -37,13 +37,13 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a asp-area="Diary" asp-controller="Sections" asp-action="Index">Diary</a></li>
+                        <li><a asp-area="" asp-controller="Diary" asp-action="Index">Diary</a></li>
                         @if (this.User.IsInRole("Super-admin") || this.User.IsInRole("Admin"))
                         {
                             <li><a href="/Administration/Sections/Index">Administration</a></li>
                         }
-                        <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                        <li><a asp-area="" asp-controller="Publishing" asp-action="Index">Articles</a></li>
+                        <li><a asp-area="" asp-controller="Knowledge" asp-action="Index">Knowledge Base</a></li>
                     </ul>
                     <partial name="_LoginPartial"/>
                 </div>
@@ -52,14 +52,19 @@
 
         <partial name="_CookieConsentPartial" />
 
-        <div class="container body-content">
+        <div>
             @RenderBody()
         </div>
     </div>
 
-    <footer class="footer">
-        <p>&copy; 2018 - Foody.Web</p>
-    </footer>
+<footer class="footer">
+    <div class="row" style="margin-top: 15px">
+        <a asp-area="" asp-controller="Home" asp-action="About" class="col-md-offset-3 col-md-2" style="color: black">About</a>
+        <a asp-area="" asp-controller="Home" asp-action="Contact" class="col-md-2" style="color: black">Contact</a>
+        <a asp-area="" asp-controller="Home" asp-action="Privacy" class="col-md-2" style="color: black">Privacy Policy</a>
+    </div>
+    <p style="color: black; margin-top: 15px">2018 - Foody &copy; by pwnd0rum</p>
+</footer>
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

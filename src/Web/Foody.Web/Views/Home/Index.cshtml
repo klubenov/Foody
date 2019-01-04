@@ -1,7 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
 <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
     <ol class="carousel-indicators">
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -10,35 +9,32 @@
     </ol>
     <div class="carousel-inner" role="listbox">
         <div class="item active">
-            <img src="~/images/banner1.svg" alt="ASP.NET" class="img-responsive" />
+            <a href="/Diary/Index">
+                <img src="~/images/diary.jpg" alt="Your Diary" class="img-responsive center-block" />
+            </a>
             <div class="carousel-caption" role="option">
                 <p>
-                    Learn how to build ASP.NET apps that can run anywhere.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525028&clcid=0x409">
-                        Learn More
-                    </a>
+                    Log your meals and view various statistics about your eating habits.
                 </p>
             </div>
         </div>
         <div class="item">
-            <img src="~/images/banner2.svg" alt="Visual Studio" class="img-responsive" />
+            <a href="/Publishing/Index">
+                <img src="~/images/articles.jpg" alt="Articles" class="img-responsive" />
+            </a>
             <div class="carousel-caption" role="option">
                 <p>
-                    There are powerful new features in Visual Studio for building modern web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525030&clcid=0x409">
-                        Learn More
-                    </a>
+                    Read articles on various topics related to nutrition, health and well-being.
                 </p>
             </div>
         </div>
         <div class="item">
-            <img src="~/images/banner3.svg" alt="Microsoft Azure" class="img-responsive" />
+            <a href="/Knowledge/Index">
+                <img src="~/images/knowledge.jpg" alt="Knowledge Base" class="img-responsive" />
+            </a>
             <div class="carousel-caption" role="option">
                 <p>
-                    Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525027&clcid=0x409">
-                        Learn More
-                    </a>
+                    Get to know your food better by browsing our knowledge base for food itself.
                 </p>
             </div>
         </div>
@@ -52,43 +48,38 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
-
-<div class="row">
-    <div class="col-md-3">
-        <h2>Application uses</h2>
-        <ul>
-            <li>Sample pages using ASP.NET Core MVC</li>
-            <li>Theming using <a href="https://go.microsoft.com/fwlink/?LinkID=398939">Bootstrap</a></li>
-        </ul>
+<div class="container">
+    <div class="row">
+        <h2 class="col-md-offset-5 col-md-4">Welcome to Foody...</h2>
     </div>
-    <div class="col-md-3">
-        <h2>How to</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398600">Add a Controller and View</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699315">Manage User Secrets using Secret Manager.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699316">Use logging to log a message.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699317">Add packages using NuGet.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699319">Target development, staging or production environment.</a></li>
-        </ul>
+    <div class="row">
+        <h3 class="col-md-offset-4 col-md-6">The site is separated into the following 3 main sections:</h3>
     </div>
-    <div class="col-md-3">
-        <h2>Overview</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518008">Conceptual overview of what is ASP.NET Core</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699320">Fundamentals of ASP.NET Core such as Startup and middleware.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398602">Working with Data</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398603">Security</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699321">Client side development</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699322">Develop on different platforms</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699323">Read more on the documentation site</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Run &amp; Deploy</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517851">Run your app</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517853">Run tools such as EF migrations and more</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398609">Publish to Microsoft Azure Web Apps</a></li>
-        </ul>
+    <div class="row">
+        <div class="col-md-4">
+            <h2 class="text-center">Diary</h2>
+            <ul>
+                <li>Available to logged users..</li>
+                <li>Log information for your every meal, using recipes or single food items..</li>
+                <li>See statistics about your diet for a certain period..</li>
+                <li>Set a goal and get recommendations about how to reach it.. (coming soon)</li>
+                <li>Log your physical activity and training activities and see if it matches your diet and goals.. (coming soon)</li>
+                <li>Feel free to share your expectations about the further development of this tool..</li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h2 class="text-center">Articles</h2>
+            <ul>
+                <li>Read various articles about the latest findings in the world of nutrition and well-being..</li>
+                <li>Engage in discussions with other users in the comment section..</li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h2 class="text-center">Knowledge Base</h2>
+            <ul>
+                <li>As with other other thing, to be effective in your care for your body and mind, you need information. Here you can find everything you need...</li>
+                <li>Please let us know if you find anything important missing..</li>
+            </ul>
+        </div>
     </div>
 </div>

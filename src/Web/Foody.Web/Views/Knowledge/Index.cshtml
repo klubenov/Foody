@@ -1,0 +1,94 @@
+﻿@using Foody.Services.Models.Shared
+@model Foody.Services.Models.Knowledge.KnowledgeListViewModel
+@{
+    ViewData["Title"] = "Knowledge Base";
+}
+
+<h2 class="text-center">Knowledge Base</h2>
+<div class="container body-content">
+    <hr class="hr-2" />
+    <h3 class="text-center">Choose a category to browse:</h3>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-1">
+            <form asp-action="Index" asp-controller="Knowledge" method="get">
+                <div class="row text-center">
+                    <input class="form-control" asp-for="PaginationModel.SearchText" type="hidden" value="@Constants.MicroElementName" />
+                    <button type="submit" class="btn btn-info form-control">Micro Elements</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-offset-2 col-md-1">
+            <form asp-action="Index" asp-controller="Knowledge" method="get">
+                <div class="row text-center">
+                    <input class="form-control" asp-for="PaginationModel.SearchText" type="hidden" value="@Constants.MacroElementName" />
+                    <button type="submit" class="btn btn-info form-control">Macro Elements</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-offset-2 col-md-1">
+            <form asp-action="Index" asp-controller="Knowledge" method="get">
+                <div class="row text-center">
+                    <input class="form-control" asp-for="PaginationModel.SearchText" type="hidden" value="@Constants.FoodItemName" />
+                    <button type="submit" class="btn btn-info form-control">Food Items</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-offset-2 col-md-1">
+            <form asp-action="Index" asp-controller="Knowledge" method="get">
+                <div class="row text-center">
+                    <input class="form-control" asp-for="PaginationModel.SearchText" type="hidden" value="@Constants.Recipename" />
+                    <button type="submit" class="btn btn-info form-control">Recipes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr class="hr-2" />
+    <h3 class="text-center">Or search directly for an item name:</h3>
+    <hr class="hr-2" />
+    <form asp-action="Index" asp-controller="Knowledge" method="get">
+        <div class="row text-center">
+            <div class="col-md-offset-3 col-md-4">
+                <input class="form-control" asp-for="PaginationModel.SearchText" placeholder="Enter desired name..." value="@(string.IsNullOrEmpty(Model.PaginationModel.SearchText) ? string.Empty :Model.PaginationModel.SearchText)" />
+                <span asp-validation-for="PaginationModel.SearchText" class="text-danger"></span>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-info form-control">Search</button>
+            </div>
+        </div>
+    </form>
+    @if (Model.Items != null)
+    {
+        <hr class="hr-2" />
+        <table class="table">
+            <thead class="">
+                <tr class="row ">
+                    <th class="col-6 border-top-0">Name</th>
+                    <th class="col-3 border-top-0">Type</th>
+                    <th class="col-3 border-top-0">View</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model.Items)
+                {
+                    <tr class="row">
+                        <th class="col-6 font-weight-normal">@item.Name</th>
+                        <th class="col-3 font-weight-normal">@item.Type</th>
+                        <th class="col-3 font-weight-normal">
+                            <form asp-action="ViewItem" asp-controller="Knowledge" method="get">
+                                <div class="justify-content-center">
+                                    <input name="itemId" type="hidden" value="@item.Id" />
+                                    <input name="currentPage" type="hidden" value="@Model.PaginationModel.CurrentPage" />
+                                    <input name="searchText" type="hidden" value="@(string.IsNullOrEmpty(Model.PaginationModel.SearchText) ? string.Empty : Model.PaginationModel.SearchText)" />
+                                    <button type="submit" class="btn btn-success">View</button>
+                                </div>
+                            </form>
+                        </th>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <partial name="_PaginationPartial" model="Model.PaginationModel" />
+    }
+    <hr class="hr-2" />
+</div>

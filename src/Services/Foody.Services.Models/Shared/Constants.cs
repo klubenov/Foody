@@ -49,5 +49,15 @@ namespace Foody.Services.Models.Shared
         public const string ArticleTitleMissingErrorMessage = "The article should have a title.";
 
         public const string ArticleContentMissingErrorMessage = "The article should have a body.";
+
+        public const string MicroElementName = "Micro Element";
+
+        public const string MacroElementName = "Macro Element";
+
+        public const string FoodItemName = "Food Item";
+
+        public const string Recipename = "Recipe";
+
+        public const int ArticlesPageCount = 10;
     }
 }

@@ -582,5 +582,19 @@ namespace Foody.Services.DataServices.Content
             context.SaveChanges();
             return recipe;
         }
+
+        public double GetRecipeCaloricContentPer100GramsById(string recipeId)
+        {
+            var caloricContent = this.context.Recipes.Include(r => r.RecipeFoodItems).ThenInclude(rfi => rfi.FoodItem)
+                .ThenInclude(fi => fi.FoodItemMacroElements).ThenInclude(fime => fime.MacroElement)
+                .Where(r => r.Id == recipeId)
+                .Select(r =>
+                    r.RecipeFoodItems.SelectMany(rfi =>
+                  rfi.FoodItem.FoodItemMacroElements.Select(fime =>
+                 fime.MacroElement.CaloricContentPerGram * fime.AmountInGrams * (rfi.AmountInGrams / 100))).Sum() 
+                 / (r.RecipeFoodItems.Select(rfi => rfi.AmountInGrams).Sum() / 100)).FirstOrDefault();
+
+            return caloricContent;
+        }
     }
 }

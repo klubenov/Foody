@@ -1,0 +1,91 @@
+﻿@using Foody.Services.Models.Shared
+@model Foody.Services.Models.Knowledge.KnowledgeItemViewModel
+@{
+    ViewData["Title"] = "Knowledge Item";
+}
+
+<div class="container body-content">
+    <div class="row">
+        <h2 class="col-md-offset-4 col-md-4 text-center">@Model.Name</h2>
+    </div>
+    <hr class="hr-2" />
+    <div class="row">
+        <p class="col-md-offset-4 col-md-4 text-center">Item Type: @(Model.IsMicroElement ? Constants.MicroElementName + " - " + Model.MicroElementType : Model.IsMacroElement ? Constants.MacroElementName + " - " + Model.MacroElementCaloricContent + " cal per gram." : Model.IsFoodItem ? Constants.FoodItemName : Model.IsRecipe ? Constants.Recipename + $" - Calories per 100 grams: {Math.Round(Model.RecipeCaloricContentPer100Grams)}" : "Invalid Type")</p>
+    </div>
+    <hr class="hr-2" />
+    <div class="row">
+        <img src="/Images/Get/location?location=@Model.ImageLocation" class="img-responsive center-block" alt="image not available">
+    </div>
+    <hr class="hr-2" />
+    <div class="row">
+        <p class="col-md-offset-2 col-md-8 text-center">@Model.Description</p>
+    </div>
+    <hr class="hr-2" />
+
+    @if (Model.IsFoodItem)
+    {
+        <h3 class="text-center">Content:</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group text-center">
+                    <h4 class="text-center">Micro Elements</h4>
+
+                    @foreach (var microElement in Model.MicroElementInFoodItemViewModels)
+                    {
+                        if (microElement.Amount > 0)
+                        {
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <a href="/Knowledge/ViewItem?itemId=@microElement.Id&searchText=@Model.SearchText&currentPage=@(Model.CurrentPage)" style="color: black">@microElement.Name</a>
+                                </div>
+                                <div class="col-md-4">
+                                    <p>@(microElement.Amount + (microElement.Name == "Vitamin A" || microElement.Name == "Vitamin D" ? " IU" : " mg."))</p>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h4 class="text-center">Macro Elements</h4>
+
+                @foreach (var macroElement in Model.MacroElementInFoodItemViewModels)
+                {
+                    if (macroElement.Amount > 0)
+                    {
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="/Knowledge/ViewItem?itemId=@macroElement.Id&searchText=@Model.SearchText&currentPage=@(Model.CurrentPage)" style="color: black">@macroElement.Name</a>
+                            </div>
+                            <div class="col-md-4">
+                                <p>@(macroElement.Amount + " g.")</p>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    }
+    else if (Model.IsRecipe)
+    {
+        <h3 class="text-center">List of food items:</h3>
+        <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+                <div class="form-group text-center">
+                    @foreach (var foodItem in Model.FoodItemInRecipeViewModels)
+                    {
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="/Knowledge/ViewItem?itemId=@foodItem.Id&searchText=@Model.SearchText&currentPage=@(Model.CurrentPage)" style="color: black">@foodItem.Name</a>
+                            </div>
+                            <div class="col-md-4">
+                                <p>@(foodItem.Amount + " g.")</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    <a href="/Knowledge/Index?searchText=@Model.SearchText&currentPage=@(Model.CurrentPage)" class="btn btn-danger col-md-offset-5 col-md-2" role="button">Back to Knowledge Base</a>
+</div>

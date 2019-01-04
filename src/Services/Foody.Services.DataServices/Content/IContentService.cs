@@ -45,5 +45,7 @@ namespace Foody.Services.DataServices.Content
         EditRecipeViewModel GetRecipeForEditing(string recipeId);
 
         Recipe EditRecipe(EditRecipeViewModel model);
+
+        double GetRecipeCaloricContentPer100GramsById(string recipeId);
     }
 }
