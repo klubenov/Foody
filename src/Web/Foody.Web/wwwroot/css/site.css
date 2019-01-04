@@ -47,7 +47,7 @@ html, body {
 .page-wrap {
     min-height: 100%;
     /* equal to footer height */
-    margin-bottom: -100px;
+    margin-bottom: -80px;
     
 }
 
@@ -81,7 +81,7 @@ html, body {
 }
 
 .footer, .page-wrap:after {
-    height: 100px;
+    height: 80px;
 }
 
 .navbar {
@@ -95,7 +95,7 @@ html, body {
 
 .card {
     border: 2px solid black;
-    border-radius: 2px
+    border-radius: 3px
 }
 
 .card-body {

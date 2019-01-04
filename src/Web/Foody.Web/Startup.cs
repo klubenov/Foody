@@ -10,6 +10,7 @@ using Foody.Services.DataServices.Content;
 using Foody.Services.DataServices.Images;
 using Foody.Services.DataServices.Knowledge;
 using Foody.Services.DataServices.Menu;
+using Foody.Services.DataServices.Publishing;
 using Foody.Services.DataServices.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -64,6 +65,7 @@ namespace Foody.Web
             services.AddTransient<IPaginationService, PaginationService>();
             services.AddTransient<IContentService, ContentService>();
             services.AddTransient<IKnowledgeService, KnowledgeService>();
+            services.AddTransient<IPublishingService, PublishingService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

@@ -1,0 +1,29 @@
+﻿@model Foody.Services.Models.Publishing.AllArticlesListViewModel
+@{
+    ViewData["Title"] = "Articles";
+}
+
+<h2 class="text-center">Foody Articles</h2>
+<hr class="hr-2" />
+<div class="container body-content">
+
+    @foreach (var article in Model.Items)
+    {
+        <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+                <a href="/Publishing/ViewArticle?articleId=@article.Id&currentPage=@Model.PaginationModel.CurrentPage" style="color: black">
+                    <div class="card" style="margin-top: 15px">
+                        <div class="card-header text-center">
+                            <h3>@article.Title</h3>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Author: @article.Author</h5>
+                            <p class="card-text">Date published: @article.PostedOn.ToString("g")</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    }
+    <partial name="_PaginationPartial" model="Model.PaginationModel" />
+</div>
