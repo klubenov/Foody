@@ -1,61 +1,84 @@
-﻿@model Foody.Services.Models.Knowledge.KnowledgeItemViewModel
+﻿@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.AspNetCore.Routing
+@model Foody.Services.Models.Publishing.ArticleViewModel
 @{
-    ViewData["Title"] = "Knowledge Item";
+    ViewData["Title"] = @Model.Title;
 }
 
 <div class="container body-content">
-<h1>Blog Post Title</h1>
-<!-- Author -->
-<p class="lead">
-    by <a href="#">Start Bootstrap</a>
-</p>
-<hr>
-<!-- Date/Time -->
-<p><span class="glyphicon glyphicon-time"></span> Posted on August 24, 2013 at 9:00 PM</p>
-<hr>
-<!-- Preview Image -->
-<img class="img-responsive" src="http://placehold.it/900x300" alt="">
-<hr>
-<!-- Post Content -->
-<p></p>
-<hr>
-<!-- Blog Comments -->
-<!-- Comments Form -->
-<div class="well">
-    <h4>Leave a Comment:</h4>
-    <form role="form">
-        <div class="form-group">
-            <textarea class="form-control" rows="3"></textarea>
+    <h1>@Model.Title</h1>
+    <!-- Author -->
+    <p class="lead">
+        by @Model.Author
+    </p>
+    <hr>
+    <!-- Date/Time -->
+    <p><span class="glyphicon glyphicon-time"></span> Posted on: @Model.PostedOn.ToString("g")</p>
+    <hr>
+    <!-- Preview Image -->
+    <div class="row">
+        <img src="/Images/Get/location?location=@Model.ImageLocation" class="img-responsive center-block" alt="image not available">
+    </div>
+    <hr>
+    <!-- Post Content -->
+    <p>@Model.Content</p>
+    <hr>
+    <!-- Blog Comments -->
+    <!-- Comments Form -->
+    @if (this.User.Identity.IsAuthenticated)
+    {
+        <div class="well">
+            <h4>Leave a Comment:</h4>
+            <form asp-controller="Publishing" asp-action="PostComment" role="form" method="post">
+                <div class="form-group">
+                    <textarea asp-for="CommentBindingModel.Content" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="CommentBindingModel.Content" class="text-danger"></span>
+                    <input type="hidden" asp-for="CommentBindingModel.ArticleId" value="@Model.Id" class="form-control" />
+                    <input type="hidden" asp-for="PaginationModel.CurrentPage" value="@Model.PaginationModel.CurrentPage" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-</div>
-<hr>
-<!-- Posted Comments -->
-<!-- Comment -->
-<div class="media">
-    <a class="pull-left" href="#">
-        <img class="media-object" src="http://placehold.it/64x64" alt="">
-    </a>
-    <div class="media-body">
-        <h4 class="media-heading">
-            Start Bootstrap
-            <small>August 25, 2014 at 9:30 PM</small>
-        </h4>
-        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-    </div>
-</div>
-<!-- Comment -->
-<div class="media">
-    <a class="pull-left" href="#">
-        <img class="media-object" src="http://placehold.it/64x64" alt="">
-    </a>
-    <div class="media-body">
-        <h4 class="media-heading">
-            Start Bootstrap
-            <small>August 25, 2014 at 9:30 PM</small>
-        </h4>
-        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-    </div>
-</div>
+    }
+    else
+    {
+        <div class="well">
+            <h4>Leave a Comment:</h4>
+            <form role="form" action="/Identity/Account/Login" method="get">
+                <div class="form-group">
+                    <textarea class="form-control" rows="3" disabled="disabled"></textarea>
+                    <input name="returnUrl" value="@(this.Context.Request.Path + this.Context.Request.QueryString)" type="hidden" />
+                </div>
+                <button type="submit" class="btn btn-primary">Log In to Comment</button>
+            </form>
+        </div>
+    }
+    <hr>
+    <!-- Posted Comments -->
+    <!-- Comment -->
+
+            <partial name="_CommentPaginationPartial" model="Model.PaginationModel" />
+
+
+    @foreach (var comment in Model.Items)
+    {
+        <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+                <div class="media" style="margin-bottom: 30px">
+                    <a class="pull-left" href="#">
+                        <img class="media-object" src="http://placehold.it/64x64" alt="">
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            @comment.Author
+                            <small>@comment.PostedOn.ToString("G")</small>
+                        </h4>
+                        @comment.Content
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Comment -->
 </div>
