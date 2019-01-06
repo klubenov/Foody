@@ -8,8 +8,8 @@ body {
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 50px;
+    padding-right: 50px;
 }
 
 /* Carousel */
@@ -104,6 +104,15 @@ html, body {
 
 .card-header {
     margin: 10px;
+}
+
+.diary-wrapper {
+    border-style:double;
+    border: black dotted 2px;
+    padding: 20px;
+    margin: 45px;
+    background-color: lightgray;
+    height: 50%
 }
 
 

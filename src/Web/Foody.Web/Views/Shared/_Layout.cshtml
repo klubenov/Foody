@@ -7,8 +7,9 @@
     <title>@ViewData["Title"] - Foody.Web</title>
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/bootstrap-datetimepicker.css" />
         <link rel="stylesheet" href="~/css/simple-sidebar.css" />
     </environment>
     <environment exclude="Development">
@@ -21,7 +22,7 @@
 <body>
     <div class="page-wrap">
         <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
+            <div style="margin-left: 100px; margin-right: 100px">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="sr-only">Toggle navigation</span>
@@ -36,7 +37,7 @@
                     <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Foody</a>
                 </div>
                 <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav" style="color: black">
                         <li><a asp-area="" asp-controller="Diary" asp-action="Index">Diary</a></li>
                         @if (this.User.IsInRole("Super-admin") || this.User.IsInRole("Admin"))
                         {

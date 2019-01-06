@@ -243,6 +243,13 @@ namespace Foody.Services.DataServices.Content
             return foodItems;
         }
 
+        public IEnumerable<string> GetRecipesNames()
+        {
+            var recipes = this.context.Recipes.Select(r => r.Name).ToArray();
+
+            return recipes;
+        }
+
         public FoodItem AddFoodItem(AddFoodItemBindingModel model)
         {
             var foodItemMacroElements = new List<FoodItemMacroElement>();

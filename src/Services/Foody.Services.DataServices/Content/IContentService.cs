@@ -30,6 +30,8 @@ namespace Foody.Services.DataServices.Content
 
         IEnumerable<string> GetFoodItemsNames();
 
+        IEnumerable<string> GetRecipesNames();
+
         FoodItem AddFoodItem(AddFoodItemBindingModel model);
 
         AllEditFoodItemsViewModel GetAllEditFoodItemsForEditing(string searchText);
