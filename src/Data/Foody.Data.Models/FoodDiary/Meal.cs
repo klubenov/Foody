@@ -22,6 +22,14 @@ namespace Foody.Data.Models.FoodDiary
         public string LocationId { get; set; }
         public Location Location { get; set; }
 
+        public double TotalCalories { get; set; }
+
+        public double CaloriesFromProteins { get; set; }
+
+        public double CaloriesFromCarbohydrates { get; set; }
+
+        public double CaloriesFromFats { get; set; }
+
         public virtual ICollection<MealRecipe> MealRecipes { get; set; }
 
         public virtual ICollection<MealFoodItem> MealFoodItems { get; set; }

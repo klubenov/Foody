@@ -13,8 +13,4 @@
     <ProjectReference Include="..\Foody.Services.Models\Foody.Services.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Diary\" />
-  </ItemGroup>
-
 </Project>

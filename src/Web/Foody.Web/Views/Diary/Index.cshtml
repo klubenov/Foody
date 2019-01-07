@@ -15,12 +15,12 @@
         </div>
 
         <div class="col-md-8">
-            <form asp-controller="Diary" asp-action="GetMeals" method="post">
+            <form asp-controller="Diary" asp-action="GetMealsForEditing" method="get">
                 <div class="row">
                     <div class='col-md-5' style="margin-bottom: 20px">
                         <div class="form-group">
                             <div class='input-group date' id='getMealsFrom'>
-                                <input type='text' class="form-control"/>
+                                <input type='text' name="startDateTime" class="form-control"/>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
@@ -30,7 +30,7 @@
                     <div class='col-md-5'>
                         <div class="form-group">
                             <div class='input-group date' id='getMealsTo'>
-                                <input type='text' class="form-control"/>
+                                <input type='text' name="endDateTime" class="form-control"/>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>

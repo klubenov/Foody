@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Foody.Services.DataServices.Common;
 using Foody.Services.DataServices.Content;
+using Foody.Services.DataServices.Diary;
 using Foody.Services.Models.Diary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +14,14 @@ namespace Foody.Web.Controllers
     public class DiaryController : Controller
     {
         private readonly IContentService contentService;
+        private readonly IDiaryService diaryService;
+        private readonly IPaginationService paginationService;
 
-        public DiaryController(IContentService contentService)
+        public DiaryController(IContentService contentService, IDiaryService diaryService, IPaginationService paginationService)
         {
             this.contentService = contentService;
+            this.diaryService = diaryService;
+            this.paginationService = paginationService;
         }
 
         [HttpGet]
@@ -45,20 +51,87 @@ namespace Foody.Web.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public IActionResult AddMeal(AddMealBindingModel model)
+        public async Task<IActionResult> AddMeal(AddMealBindingModel model)
         {
-            if (!this.ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                var foodItemNames = this.contentService.GetFoodItemsNames();
-                var recipesNames = this.contentService.GetRecipesNames();
-
-                this.ViewData["FoodItemsNames"] = foodItemNames.ToList();
-                this.ViewData["RecipesNames"] = recipesNames.ToList();
-
-                return View(model);
+                await this.diaryService.AddMeal(model, this.User.Identity.Name);
+                return RedirectToAction("Index");
             }
 
-            return null;
+            var foodItemNames = this.contentService.GetFoodItemsNames();
+            var recipesNames = this.contentService.GetRecipesNames();
+
+            this.ViewData["FoodItemsNames"] = foodItemNames.ToList();
+            this.ViewData["RecipesNames"] = recipesNames.ToList();
+
+            return View(model);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetMealsForEditing(DateTime startDateTime, DateTime endDateTime, int currentPage = 1, string searchText = null)
+        {
+            MealsListViewModel model = null;
+
+            if (string.IsNullOrEmpty(searchText))
+            {
+                searchText = "from" + startDateTime.ToString() + "to" + endDateTime.ToString();
+                model = this.diaryService.GetMealsListByPeriod(startDateTime, endDateTime, this.User.Identity.Name);
+            }
+            else
+            {
+                var datesStrings = searchText.Replace("from", string.Empty).Split("to").ToArray();
+                var startDateFromPagination = DateTime.Parse(datesStrings[0]);
+                var endDateFromPagination = DateTime.Parse(datesStrings[1]);
+                model = this.diaryService.GetMealsListByPeriod(startDateFromPagination, endDateFromPagination, this.User.Identity.Name);
+            }
+
+
+            model = this.paginationService.GetPageModel<MealsListViewModel, MealForEditingListViewModel>(model,
+                currentPage, searchText, this.GetType(), "GetMealsForEditing", null);
+
+            return View(model);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult OpenMealForEditing(string mealId, int currentPage, string searchText)
+        {
+            var meal = this.diaryService.GetMealForEditing(mealId);
+
+            if (meal == null)
+            {
+                return RedirectToAction("GetMealsForEditing", new { currentPage, searchText });
+            }
+
+            meal.CurrentPage = currentPage;
+            meal.SearchText = searchText;
+
+            var foodItemNames = this.contentService.GetFoodItemsNames();
+            var recipesNames = this.contentService.GetRecipesNames();
+
+            this.ViewData["FoodItemsNames"] = foodItemNames.ToList();
+            this.ViewData["RecipesNames"] = recipesNames.ToList();
+
+            return View(meal);
+        }
+
+        public IActionResult EditMeal(EditMealViewModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                //this.diaryService.EditMeal(model);
+                return RedirectToAction("GetMealsForEditing", new { model.CurrentPage, model.SearchText });
+            }
+
+            var foodItemNames = this.contentService.GetFoodItemsNames();
+            var recipesNames = this.contentService.GetRecipesNames();
+
+            this.ViewData["FoodItemsNames"] = foodItemNames.ToList();
+            this.ViewData["RecipesNames"] = recipesNames.ToList();
+
+            return View("OpenMealForEditing", model);
         }
     }
 }

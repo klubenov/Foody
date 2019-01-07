@@ -1,0 +1,43 @@
+﻿@model Foody.Services.Models.Diary.MealsListViewModel
+@{
+    ViewData["Title"] = "Meals";
+}
+
+<h2 class="text-center">Meals between @Model.StartDateTime.ToString() and @Model.EndDateTime.ToString()</h2>
+<hr class="hr-2" />
+<div class="container body-content">
+    <table class="table">
+        <thead class="">
+            <tr class="row ">
+                <th class="col-4 border-top-0">Time of consumption</th>
+                <th class="col-2 border-top-0">Location/Note</th>
+                <th class="col-2 border-top-0">Calories: Fats/Carbs/Proteins (Total)</th>
+                <th class="col-2 border-top-0">Calories Ratio(rounded): Fats/Carbs/Proteins</th>
+                <th class="col-2 border-top-0">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var meal in Model.Items)
+            {
+            <tr class="row">
+                <th class="col-4 font-weight-normal">@meal.TimeOfConsumption</th>
+                <th class="col-2 font-weight-normal">@(string.IsNullOrEmpty(meal.Location) ? string.Empty : $"At {meal.Location}:") @meal.Note</th>
+                <th class="col-2 font-weight-normal">@Math.Round(meal.CaloriesFromFats)/@Math.Round(meal.CaloriesFromCarbohydrates)/@Math.Round(meal.CaloriesFromProteins) (@Math.Round(meal.TotalCalories))</th>
+                <th class="col-2 font-weight-normal">@Math.Round(((meal.CaloriesFromFats / meal.TotalCalories) * 100))%/@Math.Round(((meal.CaloriesFromCarbohydrates / meal.TotalCalories) * 100))%/@Math.Round(((meal.CaloriesFromProteins / meal.TotalCalories) * 100))%</th>
+                <th class="col-2 font-weight-normal">
+                    <form asp-action="OpenMealForEditing" asp-controller="Diary" method="get">
+                        <div class="justify-content-center">
+                            <input name="mealId" type="hidden" value="@meal.MealId" />
+                            <input name="currentPage" type="hidden" value="@Model.PaginationModel.CurrentPage" />
+                            <input name="searchText" type="hidden" value="@Model.PaginationModel.SearchText" />
+                            <button type="submit" class="btn btn-success">Edit</button>
+                        </div>
+                    </form>
+                </th>
+            </tr>
+            }
+        </tbody>
+    </table>
+    <partial name="_PaginationPartial" model="Model.PaginationModel" />
+    <hr class="hr-2" />
+</div>

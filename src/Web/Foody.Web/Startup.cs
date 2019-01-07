@@ -7,6 +7,7 @@ using Foody.Data.Models;
 using Foody.Services.DataServices.Articles;
 using Foody.Services.DataServices.Common;
 using Foody.Services.DataServices.Content;
+using Foody.Services.DataServices.Diary;
 using Foody.Services.DataServices.Images;
 using Foody.Services.DataServices.Knowledge;
 using Foody.Services.DataServices.Menu;
@@ -66,6 +67,7 @@ namespace Foody.Web
             services.AddTransient<IContentService, ContentService>();
             services.AddTransient<IKnowledgeService, KnowledgeService>();
             services.AddTransient<IPublishingService, PublishingService>();
+            services.AddTransient<IDiaryService, DiaryService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
