@@ -19,7 +19,7 @@ namespace Foody.Web.Controllers
         public IActionResult Get(string location)
         {
             var filePath = this.environment.WebRootPath + location;
-
+            
             var file = PhysicalFile(filePath, "image/jpeg");
 
             return file;

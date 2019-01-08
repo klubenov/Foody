@@ -7,6 +7,7 @@ namespace Foody.Services.Models.Diary
 {
     public class EditMealViewModel
     {
+        [Required]
         public string Id { get; set; }
 
         [StringLength(50, ErrorMessage = "Location name can be maximum 50 characters.")]

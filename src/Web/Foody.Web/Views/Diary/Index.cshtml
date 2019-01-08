@@ -1,10 +1,10 @@
-﻿
+﻿@model Foody.Services.Models.Diary.DiaryIndexViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <h2 class="text-center">Diary</h2>
-<hr class="hr-2"/>
+<hr class="hr-2" />
 <div class="container body-content">
     <h4 class="text-center">Add or search for/edit already added meals:</h4>
     <div class="row">
@@ -20,7 +20,7 @@
                     <div class='col-md-5' style="margin-bottom: 20px">
                         <div class="form-group">
                             <div class='input-group date' id='getMealsFrom'>
-                                <input type='text' name="startDateTime" class="form-control"/>
+                                <input type='text' name="startDateTime" class="form-control" value="@(DateTime.Now.AddDays(-1).ToString())" />
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
@@ -30,7 +30,7 @@
                     <div class='col-md-5'>
                         <div class="form-group">
                             <div class='input-group date' id='getMealsTo'>
-                                <input type='text' name="endDateTime" class="form-control"/>
+                                <input type='text' name="endDateTime" class="form-control" value="@DateTime.Now" />
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
@@ -42,29 +42,68 @@
             </form>
         </div>
     </div>
-    <hr class="hr-2"/>
+    <hr class="hr-2" />
     <div class="row">
         <div class="diary-wrapper col-md-5 center-block">
-            <h4 class="text-center">General facts:</h4>
-            <div class="text-center">
-                <h5>Caloric ratio (carbs/protein/fats):</h5>
-                <p>- All time: 40/30/30 %</p>
-                <p>- Past month: 40/30/30 %</p>
-            </div>
-            <div class="text-center">
-                <p>Most used food item: Potato</p>
-                <p>Most used recipe: Musaka</p>
-            </div>
+            <h3 class="text-center">Past month statistics:</h3>
+            <partial name="_DiaryStatisticsPartial" model="@Model.HomePageStatistics"/>
         </div>
         <div class="diary-wrapper col-md-5 center-block">
-            <h4 class="text-center">Get statistics for:</h4>
-            <
-            <div></div>
+            <h3 class="text-center">Custom period statistics:</h3>
+            <hr/>
+            <div style="margin: 5%">
+                <form asp-controller="Diary" asp-action="Index" method="post">
+                    <div class="row">
+                        <button type="submit" class="btn btn-success center-block" style="margin-bottom: 5%">Get statistics</button>
+                    </div>
+                    <input asp-for="InitialOpen" type="hidden" value="false" />
+                    <input asp-for="HomePageStatistics.MostUsedRecipe" type="hidden" value="@Model.HomePageStatistics.MostUsedRecipe" />
+                    <input asp-for="HomePageStatistics.MostUsedRecipeId" type="hidden" value="@Model.HomePageStatistics.MostUsedRecipeId" />
+                    <input asp-for="HomePageStatistics.MostUsedFoodItem" type="hidden" value="@Model.HomePageStatistics.MostUsedFoodItem" />
+                    <input asp-for="HomePageStatistics.MostUsedFoodItemId" type="hidden" value="@Model.HomePageStatistics.MostUsedFoodItemId" />
+                    <input asp-for="HomePageStatistics.AverageDailyCalories" type="hidden" value="@Model.HomePageStatistics.AverageDailyCalories" />
+                    <input asp-for="HomePageStatistics.CaloricRatio" type="hidden" value="@Model.HomePageStatistics.CaloricRatio" />
+                    <div class="row">
+                        From:
+                        <div class="form-group">
+                            <div class='input-group date' id='getStatsFrom'>
+                                <input type='text' name="StartCustomDate" class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            @if (!Model.InitialOpen)
+                            {
+                                <span asp-validation-for="StartCustomDate" class="text-danger"></span>
+                            }
+                        </div>
+                    </div>
+                    <div class="row">
+                        To:
+                        <div class="form-group">
+                            <div class='input-group date' id='getStatsTo'>
+                                <input type='text' name="EndCustomDate" class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            @if (!Model.InitialOpen)
+                            {
+                                <span asp-validation-for="EndCustomDate" class="text-danger"></span>
+                            }
+                        </div>
+                    </div>
+                </form>
+            </div>
+            @if (Model.CustomPeriodStatistics != null)
+            {
+                <partial name="_DiaryStatisticsPartial" model="@Model.CustomPeriodStatistics"/>
+            }
         </div>
     </div>
 </div>
 
-@section Scripts{ 
+@section Scripts{
     <script type="text/javascript">
         $(function () {
             $('#getMealsFrom').datetimepicker();
@@ -76,6 +115,20 @@
             });
             $("#getMealsTo").on("dp.change", function (e) {
                 $('#getMealsFrom').data("DateTimePicker").maxDate(e.date);
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#getStatsFrom').datetimepicker();
+            $('#getStatsTo').datetimepicker({
+                useCurrent: false
+            });
+            $("#getStatsFrom").on("dp.change", function (e) {
+                $('#getStatsTo').data("DateTimePicker").minDate(e.date);
+            });
+            $("#getStatsTo").on("dp.change", function (e) {
+                $('#getStatsFrom').data("DateTimePicker").maxDate(e.date);
             });
         });
     </script>

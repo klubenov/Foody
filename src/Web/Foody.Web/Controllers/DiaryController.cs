@@ -32,7 +32,24 @@ namespace Foody.Web.Controllers
                 return LocalRedirect("/Identity/Account/Login?returnUrl=/Diary/Index");
             }
 
-            return View();
+            var model = this.diaryService.GetIndexModel(this.User.Identity.Name);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult Index(DiaryIndexViewModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var customPeriodStatisticsModel =
+                    this.diaryService.GetStatistics(model.StartCustomDate, model.EndCustomDate, this.User.Identity.Name);
+                model.CustomPeriodStatistics = customPeriodStatisticsModel;
+            }
+
+            return View(model);
         }
 
         [HttpGet]
@@ -117,11 +134,14 @@ namespace Foody.Web.Controllers
             return View(meal);
         }
 
-        public IActionResult EditMeal(EditMealViewModel model)
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditMeal(EditMealViewModel model)
         {
             if (this.ModelState.IsValid)
             {
-                //this.diaryService.EditMeal(model);
+                await this.diaryService.EditMeal(model);
                 return RedirectToAction("GetMealsForEditing", new { model.CurrentPage, model.SearchText });
             }
 

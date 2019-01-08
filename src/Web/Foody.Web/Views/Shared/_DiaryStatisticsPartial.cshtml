@@ -1,0 +1,16 @@
+﻿@model Foody.Services.Models.Diary.StatisticsViewModel
+
+<hr/>
+<div class="text-center">
+    <h5><b>Average daily calories:</b></h5>
+    <p>@Math.Round(Model.AverageDailyCalories)</p>
+</div>
+<div class="text-center">
+    <h5><b>Caloric ratio (fats/carbs/proteins):</b></h5>
+    <p>@Model.CaloricRatio</p>
+</div>
+<div class="text-center">
+    <a href=""></a>
+    <p><b>Most used food item:</b> @Model.MostUsedFoodItem</p>
+    <p><b>Most used recipe:</b> @Model.MostUsedRecipe</p>
+</div>

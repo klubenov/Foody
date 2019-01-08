@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Foody.Data.Models;
+using Foody.Web.Areas.Identity.ValidationAttributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -41,6 +42,7 @@ namespace Foody.Web.Areas.Identity.Pages.Account
         {
             [Required]
             [RegularExpression(@"^[A-Za-z_\-0-9]{0,20}$", ErrorMessage = "The username can contain only letters, digits, dashes or underscores.")]
+            [UniqueUsername]
             public string Username { get; set; }
 
             [Required]

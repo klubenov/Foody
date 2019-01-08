@@ -14,5 +14,11 @@ namespace Foody.Services.DataServices.Diary
         MealsListViewModel GetMealsListByPeriod(DateTime startDateTime, DateTime endDateTime, string username);
 
         EditMealViewModel GetMealForEditing(string mealId);
+
+        Task<Meal> EditMeal(EditMealViewModel model);
+
+        DiaryIndexViewModel GetIndexModel(string username);
+
+        StatisticsViewModel GetStatistics(DateTime modelStartCustomDate, DateTime modelEndCustomDate, string username);
     }
 }

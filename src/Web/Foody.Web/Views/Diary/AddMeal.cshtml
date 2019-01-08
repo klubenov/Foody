@@ -9,7 +9,7 @@
 <h2 class="text-center">Add Meal</h2>
 
 <div class="col-md-offset-1 col-md-10">
-    <form method="post" asp-action="AddMeal" asp-controller="Diary" enctype="multipart/form-data">
+    <form method="post" asp-action="AddMeal" asp-controller="Diary">
         <hr class="hr-2" />
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="row">
@@ -52,7 +52,7 @@
                 <div class="row">
                     <button class="btn btn-sm btn-primary center-block add_food_item_field">Add field</button>
                 </div>
-                @if (Model != null)
+                @if (Model != null && Model.FoodItems != null)
                 {
                     for (int i = 0; i < Model.FoodItems.Count; i++)
                     {
@@ -82,6 +82,31 @@
                 <div class="row">
                     <button class="btn btn-sm btn-primary center-block add_recipe_field">Add field</button>
                 </div>
+                @if (Model != null && Model.Recipes != null)
+                {
+                    for (int i = 0; i < Model.Recipes.Count; i++)
+                    {
+                        <div class="row">
+                            <div class="col-md-5">
+                                <select asp-for="Recipes[i].Name">
+                                    @foreach (var recipe in this.ViewData["RecipesNames"] as List<string>)
+                                    {
+                                        if (Model.Recipes[i].Name == recipe)
+                                        {
+                                            <option value="@recipe" selected="selected">@recipe</option>
+                                            continue;
+                                        }
+                                        <option value="@recipe">@recipe</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-offset-2 col-md-3">
+                                <input asp-for="Recipes[i].AmountInGrams" type="number" class="form-control" />
+                                <span asp-validation-for="Recipes[i].AmountInGrams" class="text-danger"></span>
+                            </div>
+                        </div>
+                    }
+                }
             </div>
         </div>
         <hr class="hr-2" />
@@ -103,7 +128,7 @@
                 foodItemSelectList.Append(selectString);
             }
             var foodItemSelectValues = '@Html.Raw(foodItemSelectList.ToString())';
-            var x = 1 + @(Model == null ? 0 : Model.FoodItems.Count); //initialize counter for text box
+            var x = 1 + @(Model == null ? 0 : Model.FoodItems == null ? 0 : Model.FoodItems.Count); //initialize counter for text box
             $('.add_food_item_field').click(function(e){ //click event on add more fields button having class add_more_button
                 e.preventDefault();
                 if(x < max_fields_limit){ //check conditions
@@ -111,9 +136,6 @@
                     $('.food_item_fields').append('<hr/><div class="row"><div class="col-md-5"><select name="FoodItems[' + (x - 2).toString() + '].Name">' + foodItemSelectValues + '</select></div><div class="col-md-offset-2 col-md-3"><input name="FoodItems['.trim() + (x - 2).toString() + '].AmountInGrams" type="number" class="form-control"/></div></div>'); //add input field
                 }
             });
-            $('.food_item_fields').on("click",".remove_field", function(e){ //user click on remove text links
-                e.preventDefault(); $(this).parent('div').remove(); x--;
-            })
         });
     </script>
 
@@ -127,7 +149,7 @@
                 recipeSelectList.Append(selectString);
             }
             var recipeSelectValues = '@Html.Raw(recipeSelectList.ToString())';
-            var x = 1; //initialize counter for text box
+            var x = 1 + @(Model == null ? 0 : Model.Recipes == null ? 0 : Model.Recipes.Count); //initialize counter for text box
             $('.add_recipe_field').click(function(e){ //click event on add more fields button having class add_more_button
                 e.preventDefault();
                 if(x < max_fields_limit){ //check conditions
@@ -135,9 +157,6 @@
                     $('.recipe_fields').append('<hr/><div class="row"><div class="col-md-5"><select name="Recipes[' + (x - 2).toString() + '].Name">' + recipeSelectValues + '</select></div><div class="col-md-offset-2 col-md-3"><input name="Recipes['.trim() + (x - 2).toString() + '].AmountInGrams" type="number" class="form-control"/></div></div>'); //add input field
                 }
             });
-            $('.recipe_fields').on("click",".remove_field", function(e){ //user click on remove text links
-                e.preventDefault(); $(this).parent('div').remove(); x--;
-            })
         });
     </script>
 
