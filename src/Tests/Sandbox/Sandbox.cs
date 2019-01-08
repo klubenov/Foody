@@ -35,7 +35,8 @@ namespace Sandbox
 
         private static void SandboxCode(IServiceProvider serviceProvider)
         {
-
+            Console.WriteLine(DateTime.Now);
+            Console.ReadLine();
         }
 
         private static void ConfigureServices(ServiceCollection services)

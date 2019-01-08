@@ -26,7 +26,7 @@
             <div class="form-group col-md-4">
                 <label asp-for="TimeOfConsumption" class="text-center">Time eaten:</label>
                 <div class='input-group date' id='timeOfConsumptionPicker'>
-                    <input name="TimeOfConsumption" type="text" class="form-control" placeholder="Time of consumption..." value="@DateTime.Now.ToString(CultureInfo.CurrentCulture)"/>
+                    <input name="TimeOfConsumption" type="text" class="form-control" placeholder="Time of consumption..." value="@DateTime.Now.ToString()"/>
                     <span asp-validation-for="TimeOfConsumption" class="text-danger"></span>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>

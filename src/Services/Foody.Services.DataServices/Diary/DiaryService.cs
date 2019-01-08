@@ -328,7 +328,18 @@ namespace Foody.Services.DataServices.Diary
                 .Where(m => m.FoodyUser.UserName == username)
                 .Where(m => m.TimeOfConsumption >= modelStartCustomDate && m.TimeOfConsumption <= modelEndCustomDate).ToArray();
 
-            var days = (modelEndCustomDate - modelStartCustomDate).Days;
+            var periodDays = (modelEndCustomDate.Date - modelStartCustomDate.Date).Days;
+            int days = 0;
+
+            for (int i = 0; i <= periodDays; i++)
+            {
+                var currentDayTimeInPeriod = modelStartCustomDate.AddDays(i);
+
+                if (meals.Any(m => m.TimeOfConsumption.Date == currentDayTimeInPeriod.Date))
+                {
+                    days++;
+                }
+            }
 
             var statisticsViewModel = new StatisticsViewModel
             {

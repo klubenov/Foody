@@ -9,7 +9,7 @@ namespace Foody.Services.Models.Publishing
     {
         public string ArticleId { get; set; }
 
-        [StringLength(1000, MinimumLength = 50, ErrorMessage = "Comment too long or too short, should be between 50 and 1000 characters")]
+        [StringLength(1000, MinimumLength = 20, ErrorMessage = "Comment too long or too short, should be between 20 and 1000 characters")]
         [Required(ErrorMessage = "Please enter a comment..")]
         public string Content { get; set; }
     }

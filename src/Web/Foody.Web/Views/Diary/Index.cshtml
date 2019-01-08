@@ -1,4 +1,5 @@
-﻿@model Foody.Services.Models.Diary.DiaryIndexViewModel
+﻿@using System.Globalization
+@model Foody.Services.Models.Diary.DiaryIndexViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -30,7 +31,7 @@
                     <div class='col-md-5'>
                         <div class="form-group">
                             <div class='input-group date' id='getMealsTo'>
-                                <input type='text' name="endDateTime" class="form-control" value="@DateTime.Now" />
+                                <input type='text' name="endDateTime" class="form-control" value="@DateTime.Now.ToString()" />
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
