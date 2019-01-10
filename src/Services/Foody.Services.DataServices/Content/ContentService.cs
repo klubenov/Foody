@@ -6,7 +6,7 @@ using Foody.Data;
 using Foody.Data.Models.Nutrition;
 using Foody.Services.DataServices.Common;
 using Foody.Services.DataServices.Images;
-using Foody.Services.Models.Content;
+using Foody.Services.DataServices.Models.Content;
 using Microsoft.EntityFrameworkCore;
 
 namespace Foody.Services.DataServices.Content
@@ -312,11 +312,13 @@ namespace Foody.Services.DataServices.Content
                     UsageInRecipesCount = fi.RecipeFoodItems.Count,
                     UsageInMealsCount = this.context.Meals.Include(m => m.MealRecipes)
                                             .ThenInclude(mr => mr.Recipe.RecipeFoodItems)
-                                            .ThenInclude(rfi => rfi.FoodItem).Select(m =>
-                                                m.MealRecipes.Select(mr =>
-                                                    mr.Recipe.RecipeFoodItems.Select(
-                                                        rfi => rfi.FoodItem.Name == fi.Name))).Count()
-                                        + this.context.Meals.Include(m => m.MealFoodItems).Count()
+                                            .ThenInclude(rfi => rfi.FoodItem)
+                                            .SelectMany(m => m.MealRecipes)
+                                            .Select(mr => mr.Recipe)
+                                            .SelectMany(r => r.RecipeFoodItems)
+                                            .Select(rfi => rfi.FoodItem).Count(fix => fix.Name == fi.Name)
+                                        + this.context.Meals.Include(m => m.MealFoodItems).ThenInclude(mfi => mfi.FoodItem)
+                                            .SelectMany(m => m.MealFoodItems).Select(m => m.FoodItem).Count(fix => fix.Name == fi.Name)
                 }).OrderByDescending(fi => fi.UsageInMealsCount + fi.UsageInRecipesCount).ToList();
 
             var allFoodItems = new AllEditFoodItemsViewModel

@@ -1,11 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Routing
-@model Foody.Services.Models.Articles.ArticleForApprovalViewModel
+@model Foody.Services.DataServices.Models.Articles.ArticleForApprovalViewModel
 
 @{
     ViewData["Title"] = "OpenForApproval";
 }
 
-<div>
+<div class="container">
     <h2>@Model.Title</h2>
 
 
@@ -16,15 +16,15 @@
     <hr class="hr-2" />
 
 
-    <p>Posted on: @Model.PostedOn.ToString("g")</p>
+    <p><span class="glyphicon glyphicon-time"></span> Posted on: @Model.PostedOn.ToString("g")</p>
 
     <hr class="hr-2" />
-
-    <img src="/Images/Get/location?location=@Model.ImageLocation" class="img-responsive" alt="image not available">
-
+    <div class="row">
+        <img src="/Images/Get/location?location=@Model.ImageLocation" class="img-responsive center-block" alt="image not available">
+    </div>
     <hr class="hr-2" />
 
-    <p class="lead">@Model.Content</p>
+    <p >@Model.Content</p>
 
     <hr class="hr-2" />
 
@@ -56,6 +56,8 @@
     </div>
 
     <hr class="hr-2" />
-    <a href="/Administration/Articles/Articles_Awaiting_Approval?currentPage=@(Model.CurrentPage)&initialOpen=false" class="btn btn-danger text-center" role="button">Back</a>
+    <div class="row">
+        <a href="/Administration/Articles/Articles_Awaiting_Approval?currentPage=@(Model.CurrentPage)&initialOpen=false" class="btn btn-danger col-md-offset-5 col-sm-2" role="button">Back</a>
+    </div>
 </div>
 

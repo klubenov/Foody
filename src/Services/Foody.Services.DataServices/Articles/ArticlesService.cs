@@ -8,7 +8,7 @@ using Foody.Data.Models;
 using Foody.Data.Models.Publishing;
 using Foody.Services.DataServices.Common;
 using Foody.Services.DataServices.Images;
-using Foody.Services.Models.Articles;
+using Foody.Services.DataServices.Models.Articles;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 

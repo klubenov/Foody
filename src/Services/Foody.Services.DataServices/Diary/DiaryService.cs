@@ -9,7 +9,7 @@ using Foody.Data;
 using Foody.Data.Models.FoodDiary;
 using Foody.Data.Models.Nutrition;
 using Foody.Services.DataServices.Common;
-using Foody.Services.Models.Diary;
+using Foody.Services.DataServices.Models.Diary;
 using Microsoft.EntityFrameworkCore;
 
 namespace Foody.Services.DataServices.Diary

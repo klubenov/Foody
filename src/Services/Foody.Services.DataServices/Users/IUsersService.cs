@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Foody.Services.Models.Users;
+using Foody.Services.DataServices.Models.Users;
 
 namespace Foody.Services.DataServices.Users
 {

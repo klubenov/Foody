@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Foody.Data.Models.Nutrition;
-using Foody.Services.Models.Content;
-using Foody.Services.Models.Diary;
+using Foody.Services.DataServices.Models.Content;
 
 namespace Foody.Services.DataServices.Content
 {

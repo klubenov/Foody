@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Foody.Data\Foody.Data.csproj" />
-    <ProjectReference Include="..\Foody.Services.Models\Foody.Services.Models.csproj" />
   </ItemGroup>
 
 </Project>

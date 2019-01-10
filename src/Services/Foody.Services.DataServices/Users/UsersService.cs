@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Foody.Data.Models;
 using System.Linq;
-using Foody.Services.Models.Users;
+using Foody.Services.DataServices.Models.Users;
 using Microsoft.AspNetCore.Identity;
 
 namespace Foody.Services.DataServices.Users

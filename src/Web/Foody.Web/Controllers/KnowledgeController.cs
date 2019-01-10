@@ -4,8 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Foody.Services.DataServices.Common;
 using Foody.Services.DataServices.Knowledge;
-using Foody.Services.Models.Knowledge;
-using Foody.Services.Models.Shared;
+using Foody.Services.DataServices.Models.Knowledge;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Foody.Web.Controllers

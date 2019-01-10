@@ -19,9 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox", "Tests\Sandbox\Sa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{B5E1A9D3-843A-4E2A-9AC8-891D78A83503}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foody.Services.DataServices", "Services\Foody.Services.DataServices\Foody.Services.DataServices.csproj", "{D5A96A52-767F-4A76-9510-F894729FD98A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foody.Services.DataServices", "Services\Foody.Services.DataServices\Foody.Services.DataServices.csproj", "{D5A96A52-767F-4A76-9510-F894729FD98A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foody.Services.Models", "Services\Foody.Services.Models\Foody.Services.Models.csproj", "{2100BC00-514E-44CA-AA20-DB669689DDF9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foody.Services.WebServices", "Services\Foody.Services.WebServices\Foody.Services.WebServices.csproj", "{4C7079FD-583A-4F9D-8DA1-71E06B5A1168}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,10 +49,10 @@ Global
 		{D5A96A52-767F-4A76-9510-F894729FD98A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5A96A52-767F-4A76-9510-F894729FD98A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5A96A52-767F-4A76-9510-F894729FD98A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2100BC00-514E-44CA-AA20-DB669689DDF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2100BC00-514E-44CA-AA20-DB669689DDF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2100BC00-514E-44CA-AA20-DB669689DDF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2100BC00-514E-44CA-AA20-DB669689DDF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C7079FD-583A-4F9D-8DA1-71E06B5A1168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C7079FD-583A-4F9D-8DA1-71E06B5A1168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C7079FD-583A-4F9D-8DA1-71E06B5A1168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C7079FD-583A-4F9D-8DA1-71E06B5A1168}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,7 +63,7 @@ Global
 		{97F4093F-1547-472B-A302-3DA00E8AB9B7} = {543FC3D6-0109-497A-B917-23261BB99708}
 		{2F367CFE-42FB-4EAC-8F78-EE6DA3478F8F} = {62502DD6-F4E4-406C-83FF-7C0550125C2D}
 		{D5A96A52-767F-4A76-9510-F894729FD98A} = {B5E1A9D3-843A-4E2A-9AC8-891D78A83503}
-		{2100BC00-514E-44CA-AA20-DB669689DDF9} = {B5E1A9D3-843A-4E2A-9AC8-891D78A83503}
+		{4C7079FD-583A-4F9D-8DA1-71E06B5A1168} = {B5E1A9D3-843A-4E2A-9AC8-891D78A83503}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4ED3AE99-6B9E-4111-BF76-81133860BA3D}

@@ -5,7 +5,7 @@ using System.Text;
 using Foody.Data;
 using Foody.Data.Models.Publishing;
 using Foody.Services.DataServices.Common;
-using Foody.Services.Models.Publishing;
+using Foody.Services.DataServices.Models.Publishing;
 using Microsoft.EntityFrameworkCore;
 
 namespace Foody.Services.DataServices.Publishing

@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Foody.Data.Models.Publishing;
 using Foody.Services.DataServices.Common;
+using Foody.Services.DataServices.Models.Publishing;
 using Foody.Services.DataServices.Publishing;
-using Foody.Services.Models.Publishing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -10,9 +10,9 @@ using Foody.Services.DataServices.Content;
 using Foody.Services.DataServices.Diary;
 using Foody.Services.DataServices.Images;
 using Foody.Services.DataServices.Knowledge;
-using Foody.Services.DataServices.Menu;
 using Foody.Services.DataServices.Publishing;
 using Foody.Services.DataServices.Users;
+using Foody.Services.WebServices.Menu;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
@@ -21,6 +21,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Foody.Web.Models;
+using Foody.Web.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -68,6 +70,7 @@ namespace Foody.Web
             services.AddTransient<IKnowledgeService, KnowledgeService>();
             services.AddTransient<IPublishingService, PublishingService>();
             services.AddTransient<IDiaryService, DiaryService>();
+            services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

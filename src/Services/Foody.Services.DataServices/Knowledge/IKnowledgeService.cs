@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Foody.Services.Models.Knowledge;
+using Foody.Services.DataServices.Models.Knowledge;
 
 namespace Foody.Services.DataServices.Knowledge
 {

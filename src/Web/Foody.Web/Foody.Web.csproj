@@ -15,7 +15,7 @@
     <ProjectReference Include="..\..\Data\Foody.Data.Models\Foody.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\Foody.Data\Foody.Data.csproj" />
     <ProjectReference Include="..\..\Services\Foody.Services.DataServices\Foody.Services.DataServices.csproj" />
-    <ProjectReference Include="..\..\Services\Foody.Services.Models\Foody.Services.Models.csproj" />
+    <ProjectReference Include="..\..\Services\Foody.Services.WebServices\Foody.Services.WebServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

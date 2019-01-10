@@ -6,10 +6,9 @@ using Foody.Data;
 using Foody.Data.Models.Nutrition;
 using Foody.Services.DataServices.Common;
 using Foody.Services.DataServices.Content;
-using Foody.Services.Models.Content;
-using Foody.Services.Models.Knowledge;
+using Foody.Services.DataServices.Models.Knowledge;
+using Foody.Services.DataServices.Models.Shared;
 using Microsoft.EntityFrameworkCore;
-using Foody.Services.Models.Shared;
 
 namespace Foody.Services.DataServices.Knowledge
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Foody.Data.Models.FoodDiary;
-using Foody.Services.Models.Diary;
+using Foody.Services.DataServices.Models.Diary;
 
 namespace Foody.Services.DataServices.Diary
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Foody.Services.Models.Shared;
+using Foody.Services.DataServices.Models.Shared;
 
 namespace Foody.Services.DataServices.Common
 {

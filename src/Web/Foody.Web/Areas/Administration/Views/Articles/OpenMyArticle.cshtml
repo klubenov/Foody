@@ -1,27 +1,29 @@
-﻿@model Foody.Services.Models.Articles.MyArticleViewModel
+﻿@model Foody.Services.DataServices.Models.Articles.MyArticleViewModel
 @{
     ViewData["Title"] = "My Article";
 }
 
-<h2>@Model.Title</h2>
+<div class="container">
+    <h2>@Model.Title</h2>
 
-<hr class="hr-2" />
+    <hr class="hr-2" />
 
-<p>Posted on: @Model.PostedOn.ToString("g")</p>
+    <p><span class="glyphicon glyphicon-time"></span> Posted on: @Model.PostedOn.ToString("g")</p>
 
-@if (Model.ApprovedOn != null)
-{
-    <p>Approved on: @Model.ApprovedOn.Value.ToString("g")</p>
-}
+    @if (Model.ApprovedOn != null)
+    {
+        <p>Approved on: @Model.ApprovedOn.Value.ToString("g")</p>
+    }
 
-<hr class="hr-2" />
+    <hr class="hr-2" />
 
-<img src="/Images/Get/location?location=@Model.ImageLocation" class="img-responsive center-block" alt="image not available">
+    <img src="/Images/Get/location?location=@Model.ImageLocation" class="img-responsive center-block" alt="image not available">
 
-<hr class="hr-2" />
+    <hr class="hr-2" />
 
-<p class="lead">@Model.Content</p>
+    <p>@Model.Content</p>
 
-<hr class="hr-2" />
+    <hr class="hr-2" />
 
-<a href="/Administration/Articles/@Model.SourceMethodName?currentPage=@(Model.CurrentPage)&initialOpen=false" class="btn btn-danger text-center" role="button">Back</a>
+    <a href="/Administration/Articles/@Model.SourceMethodName?currentPage=@(Model.CurrentPage)&initialOpen=false" class="btn btn-danger text-center" role="button">Back</a>
+</div>

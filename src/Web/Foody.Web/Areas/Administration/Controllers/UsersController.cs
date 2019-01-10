@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Foody.Services.DataServices;
-using Foody.Services.DataServices.Menu;
 using Foody.Services.DataServices.Users;
-using Foody.Services.Models;
-using Foody.Services.Models.Menu;
+using Foody.Services.WebServices.Menu;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -41,13 +39,6 @@ namespace Foody.Web.Areas.Administration.Controllers
             var model = this.usersService.GetAllUsersWithRoles();
 
             return PartialView("Roles", model);
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "Super-admin")]
-        public IActionResult Testing()
-        {
-            return null;
         }
 
         [HttpPost]

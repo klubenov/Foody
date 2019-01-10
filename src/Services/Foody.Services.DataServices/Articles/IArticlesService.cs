@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Foody.Data.Models.Publishing;
-using Foody.Services.Models.Articles;
+using Foody.Services.DataServices.Models.Articles;
 
 namespace Foody.Services.DataServices.Articles
 {

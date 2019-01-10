@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Foody.Services.DataServices.Common;
 using Foody.Services.DataServices.Content;
 using Foody.Services.DataServices.Diary;
-using Foody.Services.Models.Diary;
+using Foody.Services.DataServices.Models.Diary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

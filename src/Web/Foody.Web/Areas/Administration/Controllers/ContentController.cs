@@ -4,9 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Foody.Services.DataServices.Common;
 using Foody.Services.DataServices.Content;
-using Foody.Services.DataServices.Menu;
-using Foody.Services.Models.Content;
-using Foody.Services.Models.Menu;
+using Foody.Services.DataServices.Models.Content;
+using Foody.Services.WebServices.Menu;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -18,6 +18,10 @@ namespace Foody.Web.Controllers
 
         public IActionResult Get(string location)
         {
+            if (string.IsNullOrEmpty(location) || !location.StartsWith("\\images"))
+            {
+                return null;
+            }
             var filePath = this.environment.WebRootPath + location;
             
             var file = PhysicalFile(filePath, "image/jpeg");
